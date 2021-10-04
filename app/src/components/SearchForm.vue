@@ -1,13 +1,15 @@
 <template>
   <div>
-    <div class="form">
+    <div class="form" :style="style.form">
       <div class="form__group">
         <input class="form__input" type="text" v-model.trim="form.text" />
       </div>
       <div class="cart"></div>
       <button class="btn" @click="fetchBooks">{{ form.btnTitle }}</button>
     </div>
-    <Item :total="result.books" />
+    <div class="block" :style="style.block">
+      <Item v-for="item in result.items" :volume="item" :key="item.id" />
+    </div>
   </div>
 </template>
 
@@ -27,12 +29,27 @@ export default {
         btnTitle: "Отправить",
       },
       result: {
-        books: {},
+        items: [],
+      },
+      style: {
+        form: {
+          margin: "0 0 10px",
+          padding: 0,
+        },
+        block: {
+          // display: "flex",
+          // flexWrap: "wrap",
+          // justifyContent: "space-around",
+        },
       },
     };
   },
+
   methods: {
     fetchBooks() {
+      let init_items = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+      this.result.items = [];
+
       if (this.form.text == "") {
         alert("поле не может быть пустым");
         return;
@@ -41,8 +58,14 @@ export default {
         method: "GET",
       })
         .then((response) => response.json())
-        .then((json) => (this.result.books = json));
-      // this.form.text = "";
+        .then((json) => {
+          for (const i in init_items) {
+            const it = json.items[i];
+            this.result.items.push(it);
+          }
+        });
+      this.form.text = "";
+      console.log(this.result.items);
     },
   },
 };
