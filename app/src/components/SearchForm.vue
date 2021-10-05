@@ -3,21 +3,39 @@
     <div class="form">
       <div class="form__group">
         <input class="form__input" type="text" v-model.trim="form.text" />
-        <div class="cart">
-          <span class="cart__img"></span>
-          <p>{{ cart.text }}</p>
-        </div>
       </div>
       <button class="btn" @click="fetchBooks">{{ form.btnTitle }}</button>
     </div>
+    <router-link class="link" to="/cart/user">
+      <div class="cart">
+        <span class="cart__img"></span>
+        <p v-show="cart.isTextActive">{{ cart.text }}</p>
+      </div>
+    </router-link>
     <div class="block">
       <Item
         v-for="item in result.items"
         :volume="item"
         :key="item.id"
-        @priceproduct="getPrice"
+        @priceproduct="getTextOrder"
       />
     </div>
+    <div class="order" v-show="order.isOrder">
+      <table class="order__table">
+        <tr v-for="(prod, index) in this.cart.products" :key="index">
+          <td>
+            <img :src="prod.img" alt="" />
+          </td>
+          <td>{{ prod.desc }}</td>
+          <td>{{ prod.amount }}</td>
+        </tr>
+      </table>
+      <div>
+        <span></span>
+        <button>{{ order.btnTitle }}</button>
+      </div>
+    </div>
+    <router-view></router-view>
   </div>
 </template>
 
@@ -32,22 +50,41 @@ export default {
   data() {
     return {
       url: process.env.VUE_APP_URL,
-      isActive: true,
+      type: this.$route.params.type,
       form: {
         text: "",
         btnTitle: "Отправить",
       },
       cart: {
+        isTextActive: false,
         text: "",
+        count: 0,
+        total: 0,
+        products: [],
+      },
+      order: {
+        img: "",
+        desc: "",
+        prise: "",
+        btnTitle: "Заказать",
+        isOrder: false,
       },
       result: {
         items: [],
       },
     };
   },
+  watch: {
+    $route: function (newValue) {
+      this.type = newValue.params.type;
+      this.result.items = [];
+      this.cart.isTextActive = false;
+      this.order.isOrder = true;
+    },
+  },
   methods: {
     fetchBooks() {
-      let init_items = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+      let init_items = [1, 2, 3, 4, 5, 6, 7];
       this.result.items = [];
 
       if (this.form.text == "") {
@@ -65,10 +102,20 @@ export default {
           }
         });
       this.form.text = "";
-      console.log(this.result.items);
     },
-    getPrice(obj) {
-      this.cart.text = `Добавлено ${obj.count} товаров на сумму ${obj.sum} гривен.`;
+    getTextOrder(obj) {
+      this.cart.isTextActive = true;
+      this.cart.count++;
+      this.cart.total += obj.amount;
+      this.cart.text = `Добавлено ${this.cart.count} товаров на сумму ${this.cart.total} гривен.`;
+      this.getProductCart(obj);
+    },
+    getProductCart(obj) {
+      let cartProduct = {};
+      cartProduct.img = obj.img;
+      cartProduct.desc = obj.desc;
+      cartProduct.amount = obj.amount;
+      this.cart.products.push(cartProduct);
     },
   },
 };
@@ -93,14 +140,23 @@ export default {
   justify-content: center;
   align-items: center;
 }
-.form__input {
-  margin-right: 20px;
-}
 .cart {
   display: flex;
   flex-wrap: wrap;
 }
 .btn {
   width: 100px;
+}
+.link {
+  display: block;
+}
+.order {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+}
+
+.order__table {
+  min-width: 250px;
 }
 </style>

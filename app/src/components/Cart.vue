@@ -1,5 +1,5 @@
 <template>
-  <div class="cart">
+  <div>
     <h3>{{ title }}</h3>
   </div>
 </template>
@@ -9,8 +9,11 @@ export default {
   name: "Cart",
   data() {
     return {
-      title: "Cart",
+      title: "Список заказанных товаров",
     };
+  },
+  created() {
+    console.log(this.$route);
   },
 };
 </script>

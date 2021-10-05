@@ -2,7 +2,10 @@
   <div>
     <ul class="card__list">
       <li class="card__item">
-        <img :src="volume.volumeInfo.imageLinks.thumbnail" :alt="card.imgAlt" />
+        <img
+          :src="volume.volumeInfo.imageLinks.smallThumbnail"
+          :alt="card.imgAlt"
+        />
       </li>
       <li class="card__item">
         <span>{{ volume.volumeInfo.title }}</span>
@@ -86,12 +89,6 @@ export default {
       card: {
         imgAlt: "Изображение обложки тома",
       },
-      form: {
-        productData: {
-          counter: 0,
-          sum: 0,
-        },
-      },
     };
   },
   methods: {
@@ -99,11 +96,10 @@ export default {
       this.isActive = true;
     },
     addProduct() {
-      this.form.productData.sum += this.volume.saleInfo.listPrice.amount;
-      this.form.productData.counter++;
       this.$emit("priceproduct", {
-        count: this.form.productData.counter,
-        sum: this.form.productData.sum,
+        img: this.volume.volumeInfo.imageLinks.smallThumbnail,
+        desc: this.volume.volumeInfo.description,
+        amount: this.volume.saleInfo.listPrice.amount,
       });
     },
   },
