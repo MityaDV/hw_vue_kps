@@ -1,25 +1,33 @@
 <template>
   <div>
-    <div class="form">
-      <div class="form__group">
-        <input class="form__input" type="text" v-model.trim="form.text" />
+    <div class="wrapper">
+      <div class="form">
+        <div class="form-group">
+          <input class="form-control" type="text" v-model.trim="form.text" />
+        </div>
+        <button class="btn-primary" @click="fetchBooks">
+          {{ form.btnTitle }}
+        </button>
       </div>
-      <button class="btn" @click="fetchBooks">{{ form.btnTitle }}</button>
-    </div>
-    <router-link class="link" to="/cart/user">
       <div class="cart">
-        <span class="cart__img"></span>
+        <router-link to="/cart">
+          <img
+            src="../assets/images/pngegg.png"
+            alt="Изображение корзины"
+            width="50px"
+          />
+        </router-link>
         <p v-show="cart.isTextActive">{{ cart.text }}</p>
       </div>
-    </router-link>
-    <div class="block">
-      <Item
-        v-for="item in result.items"
-        :volume="item"
-        :key="item.id"
-        @priceproduct="getTextOrder"
-      />
     </div>
+
+    <Item
+      v-for="item in result.items"
+      :volume="item"
+      :key="item.id"
+      @priceproduct="getTextOrder"
+    />
+
     <div class="order" v-show="order.isOrder">
       <table class="order__table">
         <tr v-for="(prod, index) in this.cart.products" :key="index">
@@ -122,33 +130,14 @@ export default {
 </script>
 
 <style lang="scss">
-.form {
-  margin: 0 0 10px;
-  padding: 0;
-}
-.cart__img {
-  background-image: url("../assets/images/pngegg.png");
-  background-repeat: no-repeat;
-  background-size: contain;
-  width: 50px;
-  height: 50px;
-  display: flex;
-}
-.form__group {
+.wrapper {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
 }
-.cart {
-  display: flex;
-  flex-wrap: wrap;
-}
-.btn {
-  width: 100px;
-}
-.link {
-  display: block;
+.form {
+  margin-right: 15px;
 }
 .order {
   display: flex;

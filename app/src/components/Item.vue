@@ -1,76 +1,107 @@
 <template>
   <div>
-    <ul class="card__list">
-      <li class="card__item">
+    <ul class="list-group">
+      <li class="list-group-item">
         <img
           :src="volume.volumeInfo.imageLinks.smallThumbnail"
           :alt="card.imgAlt"
         />
       </li>
-      <li class="card__item">
-        <span>{{ volume.volumeInfo.title }}</span>
-        <div class="modal" v-show="isActive">
-          <div>
-            <img
-              :src="volume.volumeInfo.imageLinks.smallThumbnail"
-              :alt="card.imgAlt"
-            />
-            <p>{{ volume.volumeInfo.description }}</p>
-            <form class="form">
-              <ul class="form__list">
-                <li class="form__item">
-                  <input
-                    type="text"
-                    id="name"
-                    name="name"
-                    placeholder="Введите Ваше имя"
-                    required
-                  />
-                  <label for="phone-number" aria-label="Ваш телефон"></label>
-                </li>
-                <li class="form__item">
-                  <input
-                    type="tel"
-                    id="phone-number"
-                    name="phone-number"
-                    placeholder="+3 Введите 11 цифр номера"
-                    required
-                  />
-                  <label for="phone-number" aria-label="Ваш телефон"></label>
-                </li>
-                <li class="form__item">
-                  <input
-                    type="email"
-                    id="email"
-                    name="email"
-                    placeholder="E-mail"
-                  />
+      <li class="list-group-item">
+        <h3 class="text-primary">{{ volume.volumeInfo.title }}</h3>
+        <div class="container-fluid" v-show="isActive">
+          <div class="row">
+            <div class="col-md-2">
+              <img
+                :src="volume.volumeInfo.imageLinks.smallThumbnail"
+                :alt="card.imgAlt"
+              />
+            </div>
+            <div class="col-md-10">
+              <p class="text-primary smal text-left">
+                {{ volume.volumeInfo.description }}
+              </p>
+              <form class="form-horizontal">
+                <div class="form-group">
                   <label
+                    class="control-label col-md-2"
+                    for="name"
+                    aria-label="Имя пользователя"
+                    >Имя пользователя:</label
+                  >
+                  <div class="col-md-10">
+                    <input
+                      class="form-control"
+                      type="text"
+                      id="name"
+                      name="name"
+                      placeholder="Введите ваше имя"
+                      required
+                    />
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label
+                    class="control-label col-md-2"
+                    for="phone-number"
+                    aria-label="Ваш телефон"
+                    >Phone number:</label
+                  >
+                  <div class="col-md-10">
+                    <input
+                      class="form-control"
+                      type="tel"
+                      id="phone-number"
+                      name="phone-number"
+                      placeholder="+3 Введите 11 цифр номера"
+                      required
+                    />
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label
+                    class="control-label col-md-2"
                     for="email"
                     aria-label="Ваш адрес электронной почты"
-                  ></label>
-                </li>
-              </ul>
-              <button class="btn form__btn" @click.prevent="addProduct()">
-                Отправить
-              </button>
-            </form>
+                    >Email:</label
+                  >
+                  <div class="col-md-10">
+                    <input
+                      class="form-control"
+                      type="email"
+                      id="email"
+                      name="email"
+                      placeholder="someone@example.com"
+                    />
+                  </div>
+                </div>
+                <button
+                  class="btn-info"
+                  :disabled="modal.isButtonDisabled"
+                  @click.prevent="addProduct"
+                >
+                  {{ modal.btnTitle }}
+                </button>
+              </form>
+            </div>
           </div>
         </div>
       </li>
       <li
-        class="card__item"
+        class="list-group-item"
         v-for="(autor, index) in volume.volumeInfo.authors"
         :key="index"
       >
         <span>{{ autor }}</span>
       </li>
-      <li class="card__item">
+      <li class="list-group-item">
         <span>
           {{ volume.volumeInfo.publishedDate }}
         </span>
       </li>
-      <button class="card__btn" @click.prevent="openModal">Заказать</button>
+      <button class="btn-primary" @click.prevent="openModal">
+        {{ card.btnTitle }}
+      </button>
     </ul>
   </div>
 </template>
@@ -88,6 +119,11 @@ export default {
       isActive: false,
       card: {
         imgAlt: "Изображение обложки тома",
+        btnTitle: "Заказать",
+      },
+      modal: {
+        btnTitle: "Отправить",
+        isButtonDisabled: true,
       },
     };
   },
@@ -105,26 +141,3 @@ export default {
   },
 };
 </script>
-
-<style lang="scss">
-.card__list {
-  list-style: none;
-  margin: 0 0 10px;
-  padding: 10px;
-  border: 1px solid black;
-  border-radius: 10px;
-}
-
-.modal {
-  padding: 10px;
-  border: 1px solid black;
-  border-radius: 6px;
-  background-color: #a5a7b9;
-}
-
-.form__list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-</style>

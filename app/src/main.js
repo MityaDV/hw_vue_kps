@@ -7,7 +7,7 @@ Vue.config.productionTip = false;
 
 Vue.use(VueRouter);
 
-const routes = [{ path: "/cart/:type", component: Cart }];
+const routes = [{ path: "/cart", component: Cart }];
 
 const router = new VueRouter({
   routes,

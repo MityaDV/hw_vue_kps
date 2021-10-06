@@ -1,6 +1,6 @@
 <template>
-  <div id="app">
-    <h2>{{ title }}</h2>
+  <div id="app" class="container">
+    <h2 class="text-primary">{{ title }}</h2>
     <SearchForm />
   </div>
 </template>
@@ -15,7 +15,7 @@ export default {
   },
   data() {
     return {
-      title: "Search Books",
+      title: "Google Search Books",
     };
   },
 };
@@ -29,5 +29,9 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+}
+
+li {
+  list-style: none;
 }
 </style>
