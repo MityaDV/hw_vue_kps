@@ -3,7 +3,12 @@
     <div class="wrapper">
       <div class="form">
         <div class="form-group">
-          <input class="form-control" type="text" v-model.trim="form.text" />
+          <input
+            class="form-control"
+            type="text"
+            v-model.trim="form.text"
+            @keyup.enter="fetchBooks"
+          />
         </div>
         <button class="btn-primary" @click="fetchBooks">
           {{ form.btnTitle }}
@@ -26,6 +31,8 @@
       :volume="item"
       :key="item.id"
       @priceproduct="getTextOrder"
+      @clickModalButton="clickModal"
+      @clickEscButton="clickEsc"
     />
 
     <div class="order" v-show="order.isOrder">
@@ -59,6 +66,7 @@ export default {
     return {
       url: process.env.VUE_APP_URL,
       type: this.$route.params.type,
+
       form: {
         text: "",
         btnTitle: "Отправить",
@@ -77,6 +85,7 @@ export default {
         btnTitle: "Заказать",
         isOrder: false,
       },
+
       result: {
         items: [],
       },
@@ -125,6 +134,12 @@ export default {
       cartProduct.amount = obj.amount;
       this.cart.products.push(cartProduct);
     },
+    clickModal() {
+      this.$emit("clickModalButton");
+    },
+    clickEsc() {
+      this.$emit("clickEscButton");
+    },
   },
 };
 </script>
@@ -136,6 +151,7 @@ export default {
   justify-content: center;
   align-items: flex-start;
 }
+
 .form {
   margin-right: 15px;
 }

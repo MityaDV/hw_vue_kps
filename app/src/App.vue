@@ -1,7 +1,11 @@
 <template>
   <div id="app" class="container">
     <h2 class="text-primary">{{ title }}</h2>
-    <SearchForm />
+    <SearchForm
+      @clickModalButton="showOverlayScreen"
+      @clickEscButton="closeOverlayScreen"
+    />
+    <div :class="showOverlay"></div>
   </div>
 </template>
 
@@ -16,7 +20,23 @@ export default {
   data() {
     return {
       title: "Google Search Books",
+      showOverlay: {
+        overlay: true,
+        overlay_open: false,
+      },
     };
+  },
+  methods: {
+    showOverlayScreen() {
+      if (this.showOverlay.overlay) {
+        this.showOverlay.overlay_open = true;
+      }
+    },
+    closeOverlayScreen() {
+      if (this.showOverlay.overlay_open) {
+        this.showOverlay.overlay_open = false;
+      }
+    },
   },
 };
 </script>
@@ -33,5 +53,22 @@ export default {
 
 li {
   list-style: none;
+}
+
+.overlay {
+  $color_white_90: rgba(255, 255, 255, 0.9);
+
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 50;
+  width: 100%;
+  height: 100%;
+  display: none;
+  background: $color_white_90;
+}
+
+.overlay_open {
+  display: block;
 }
 </style>

@@ -9,7 +9,12 @@
       </li>
       <li class="list-group-item">
         <h3 class="text-primary">{{ volume.volumeInfo.title }}</h3>
-        <div class="container-fluid" v-show="isActive">
+        <div
+          class="container-fluid"
+          :class="modal.showModal"
+          @keyup.esc="closeModal"
+          tabindex="1"
+        >
           <div class="row">
             <div class="col-md-2">
               <img
@@ -36,7 +41,9 @@
                       id="name"
                       name="name"
                       placeholder="Введите ваше имя"
-                      required
+                      :required="modal.isRequired"
+                      v-model.trim="modal.modalFormInput.name"
+                      pattern="regex.name"
                     />
                   </div>
                 </div>
@@ -54,7 +61,8 @@
                       id="phone-number"
                       name="phone-number"
                       placeholder="+3 Введите 11 цифр номера"
-                      required
+                      :required="modal.isRequired"
+                      v-model.trim="modal.modalFormInput.tel"
                     />
                   </div>
                 </div>
@@ -72,6 +80,8 @@
                       id="email"
                       name="email"
                       placeholder="someone@example.com"
+                      :required="modal.isRequired"
+                      v-model.trim="modal.modalFormInput.email"
                     />
                   </div>
                 </div>
@@ -123,13 +133,36 @@ export default {
       },
       modal: {
         btnTitle: "Отправить",
-        isButtonDisabled: true,
+        isButtonDisabled: false,
+        isRequired: true,
+        regex: {
+          name: "^[A-Za-z0-9]{2}$",
+          email: "",
+        },
+        modalFormInput: {
+          name: "",
+          tel: "",
+          email: "",
+        },
+        showModal: {
+          popup: true,
+          popup_open: false,
+        },
       },
     };
   },
   methods: {
     openModal() {
-      this.isActive = true;
+      if (this.modal.showModal.popup) {
+        this.modal.showModal.popup_open = true;
+        this.$emit("clickModalButton");
+      }
+    },
+    closeModal() {
+      if (this.modal.showModal.popup_open) {
+        this.modal.showModal.popup_open = false;
+        this.$emit("clickEscButton");
+      }
     },
     addProduct() {
       this.$emit("priceproduct", {
@@ -141,3 +174,45 @@ export default {
   },
 };
 </script>
+
+<style lang="scss">
+.popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  z-index: 100;
+
+  display: none;
+  width: 900px;
+  padding: 15px;
+
+  background-color: rgb(250, 250, 250);
+  box-shadow: 0 10px 20px rgba(4, 6, 6, 0.2);
+  transform: translateX(-50%) translateY(-50%);
+
+  @keyframes departure {
+    0% {
+      transform: translateX(-200%) translateY(-50%);
+    }
+
+    70% {
+      transform: translateX(-30%) translateY(-50%);
+    }
+
+    90% {
+      transform: translateX(-70%) translateY(-50%);
+    }
+
+    100% {
+      transform: translateX(-50%) translateY(-50%);
+    }
+  }
+}
+.popup_open {
+  display: block;
+  transition: ease-out;
+  animation-name: departure;
+  animation-duration: 0.7s;
+  will-change: transform;
+}
+</style>
