@@ -1,16 +1,14 @@
 <template>
-  <div id="app" class="container">
+  <div id="app" class="container" @keyup.esc="closeOverlayScreen">
     <h2 class="text-primary">{{ title }}</h2>
-    <SearchForm
-      @clickModalButton="showOverlayScreen"
-      @clickEscButton="closeOverlayScreen"
-    />
-    <div :class="showOverlay"></div>
+    <SearchForm @clickModalButton="showOverlayScreen" />
+    <div :class="showOverlay" @click.left="closeOverlayScreen"></div>
   </div>
 </template>
 
 <script>
 import SearchForm from "@/components/SearchForm.vue";
+import { EventBus } from "./main.js";
 
 export default {
   name: "App",
@@ -30,11 +28,14 @@ export default {
     showOverlayScreen() {
       if (this.showOverlay.overlay) {
         this.showOverlay.overlay_open = true;
+        document.querySelector("body").style.overflow = "hidden";
       }
     },
     closeOverlayScreen() {
       if (this.showOverlay.overlay_open) {
         this.showOverlay.overlay_open = false;
+        document.querySelector("body").style.overflow = "visible";
+        EventBus.$emit("closeModal");
       }
     },
   },

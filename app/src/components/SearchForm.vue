@@ -10,7 +10,7 @@
             @keyup.enter="fetchBooks"
           />
         </div>
-        <button class="btn-primary" @click="fetchBooks">
+        <button class="btn btn-primary" @click="fetchBooks">
           {{ form.btnTitle }}
         </button>
       </div>
@@ -32,7 +32,6 @@
       :key="item.id"
       @priceproduct="getTextOrder"
       @clickModalButton="clickModal"
-      @clickEscButton="clickEsc"
     />
 
     <div class="order" v-show="order.isOrder">
@@ -124,7 +123,9 @@ export default {
       this.cart.isTextActive = true;
       this.cart.count++;
       this.cart.total += obj.amount;
-      this.cart.text = `Добавлено ${this.cart.count} товаров на сумму ${this.cart.total} гривен.`;
+      this.cart.text = `Добавлено ${
+        this.cart.count
+      } товаров на сумму ${+this.cart.total.toFixed(2)} грн.`;
       this.getProductCart(obj);
     },
     getProductCart(obj) {
@@ -136,9 +137,6 @@ export default {
     },
     clickModal() {
       this.$emit("clickModalButton");
-    },
-    clickEsc() {
-      this.$emit("clickEscButton");
     },
   },
 };

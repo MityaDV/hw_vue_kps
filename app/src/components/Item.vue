@@ -9,12 +9,7 @@
       </li>
       <li class="list-group-item">
         <h3 class="text-primary">{{ volume.volumeInfo.title }}</h3>
-        <div
-          class="container-fluid"
-          :class="modal.showModal"
-          @keyup.esc="closeModal"
-          tabindex="1"
-        >
+        <div class="container-fluid" :class="modal.showModal">
           <div class="row">
             <div class="col-md-2">
               <img
@@ -43,7 +38,6 @@
                       placeholder="Введите ваше имя"
                       :required="modal.isRequired"
                       v-model.trim="modal.modalFormInput.name"
-                      pattern="regex.name"
                     />
                   </div>
                 </div>
@@ -86,7 +80,7 @@
                   </div>
                 </div>
                 <button
-                  class="btn-info"
+                  class="btn btn-info"
                   :disabled="modal.isButtonDisabled"
                   @click.prevent="addProduct"
                 >
@@ -109,7 +103,7 @@
           {{ volume.volumeInfo.publishedDate }}
         </span>
       </li>
-      <button class="btn-primary" @click.prevent="openModal">
+      <button class="btn btn-primary" @click.prevent="openModal">
         {{ card.btnTitle }}
       </button>
     </ul>
@@ -117,6 +111,7 @@
 </template>
 
 <script>
+import { EventBus } from "../main";
 export default {
   name: "Item",
   props: {
@@ -127,6 +122,7 @@ export default {
   data() {
     return {
       isActive: false,
+
       card: {
         imgAlt: "Изображение обложки тома",
         btnTitle: "Заказать",
@@ -135,10 +131,7 @@ export default {
         btnTitle: "Отправить",
         isButtonDisabled: false,
         isRequired: true,
-        regex: {
-          name: "^[A-Za-z0-9]{2}$",
-          email: "",
-        },
+
         modalFormInput: {
           name: "",
           tel: "",
@@ -151,17 +144,12 @@ export default {
       },
     };
   },
+
   methods: {
     openModal() {
       if (this.modal.showModal.popup) {
         this.modal.showModal.popup_open = true;
         this.$emit("clickModalButton");
-      }
-    },
-    closeModal() {
-      if (this.modal.showModal.popup_open) {
-        this.modal.showModal.popup_open = false;
-        this.$emit("clickEscButton");
       }
     },
     addProduct() {
@@ -172,10 +160,15 @@ export default {
       });
     },
   },
+  mounted() {
+    EventBus.$on("closeModal", () => (this.modal.showModal.popup_open = false));
+  },
 };
 </script>
 
 <style lang="scss">
+$color_blue_sky: #00b2ff;
+
 .popup {
   position: fixed;
   top: 50%;
@@ -185,7 +178,7 @@ export default {
   display: none;
   width: 900px;
   padding: 15px;
-
+  outline: 1px solid $color_blue_sky;
   background-color: rgb(250, 250, 250);
   box-shadow: 0 10px 20px rgba(4, 6, 6, 0.2);
   transform: translateX(-50%) translateY(-50%);
