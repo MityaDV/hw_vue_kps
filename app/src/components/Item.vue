@@ -38,7 +38,13 @@
                       placeholder="Введите ваше имя"
                       :required="modal.isRequired"
                       v-model.trim="modal.modalFormInput.name"
+                      ref="name"
                     />
+                    <b
+                      class="small text-danger"
+                      v-if="modal.errors.error_name"
+                      >{{ modal.errors.textName }}</b
+                    >
                   </div>
                 </div>
                 <div class="form-group">
@@ -58,6 +64,11 @@
                       :required="modal.isRequired"
                       v-model.trim="modal.modalFormInput.tel"
                     />
+                    <b
+                      class="small text-danger"
+                      v-if="modal.errors.error_tel"
+                      >{{ modal.errors.textTel }}</b
+                    >
                   </div>
                 </div>
                 <div class="form-group">
@@ -77,6 +88,11 @@
                       :required="modal.isRequired"
                       v-model.trim="modal.modalFormInput.email"
                     />
+                    <b
+                      class="small text-danger"
+                      v-if="modal.errors.error_email"
+                      >{{ modal.errors.textEmail }}</b
+                    >
                   </div>
                 </div>
                 <button
@@ -133,13 +149,21 @@ export default {
         isRequired: true,
 
         modalFormInput: {
-          name: "",
-          tel: "",
-          email: "",
+          name: null,
+          tel: null,
+          email: null,
         },
         showModal: {
           popup: true,
           popup_open: false,
+        },
+        errors: {
+          error_name: false,
+          error_tel: false,
+          error_email: false,
+          textName: "Укажите имя",
+          textTel: "Укажите корректный телефон",
+          textEmail: "Укажите корректный адрес электронной почты",
         },
       },
     };
@@ -150,6 +174,9 @@ export default {
       if (this.modal.showModal.popup) {
         this.modal.showModal.popup_open = true;
         this.$emit("clickModalButton");
+        this.$nextTick(() => {
+          this.$refs.name.focus();
+        });
       }
     },
     addProduct() {
@@ -159,6 +186,17 @@ export default {
         amount: this.volume.saleInfo.listPrice.amount,
       });
     },
+    chechFormModal() {
+      if (
+        !this.modal.modalFormInput.name ||
+        this.modal.modalFormInput.name.length <= 2
+      ) {
+        this.modal.errors.error_name = true;
+      }
+    },
+  },
+  created() {
+    this.chechFormModal();
   },
   mounted() {
     EventBus.$on("closeModal", () => (this.modal.showModal.popup_open = false));
