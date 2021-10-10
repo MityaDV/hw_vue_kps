@@ -6,7 +6,7 @@
           <input
             class="form-control"
             type="text"
-            v-model.trim="form.text"
+            v-model.trim="form.searchText"
             @keyup.enter="fetchBooks"
           />
         </div>
@@ -67,7 +67,7 @@ export default {
       type: this.$route.params.type,
 
       form: {
-        text: "",
+        searchText: "",
         btnTitle: "Отправить",
       },
       cart: {
@@ -78,9 +78,6 @@ export default {
         products: [],
       },
       order: {
-        img: "",
-        desc: "",
-        prise: "",
         btnTitle: "Заказать",
         isOrder: false,
       },
@@ -103,11 +100,11 @@ export default {
       let init_items = [1, 2, 3, 4, 5, 6, 7];
       this.result.items = [];
 
-      if (this.form.text == "") {
-        alert("поле не может быть пустым");
+      if (this.form.searchText == "") {
+        alert("Поле не может быть пустым!");
         return;
       }
-      fetch(this.url + this.form.text, {
+      fetch(this.url + this.form.searchText, {
         method: "GET",
       })
         .then((response) => response.json())
@@ -117,7 +114,7 @@ export default {
             this.result.items.push(it);
           }
         });
-      this.form.text = "";
+      this.form.searchText = "";
     },
     getTextOrder(obj) {
       this.cart.isTextActive = true;
@@ -125,7 +122,7 @@ export default {
       this.cart.total += obj.amount;
       this.cart.text = `Добавлено ${
         this.cart.count
-      } товаров на сумму ${+this.cart.total.toFixed(2)} грн.`;
+      } товар(ов) на сумму ${+this.cart.total.toFixed(2)} грн.`;
       this.getProductCart(obj);
     },
     getProductCart(obj) {
@@ -153,6 +150,7 @@ export default {
 .form {
   margin-right: 15px;
 }
+
 .order {
   display: flex;
   flex-wrap: wrap;

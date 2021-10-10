@@ -9,14 +9,13 @@ Vue.config.productionTip = false;
 Vue.use(VueRouter);
 Vue.use(Vuelidate);
 
-const routes = [{ path: "/cart", component: Cart }];
+export const EventBus = new Vue();
 
+const routes = [{ path: "/cart", component: Cart }];
 const router = new VueRouter({
   routes,
   mode: "history",
 });
-
-export const EventBus = new Vue();
 
 new Vue({
   router,
