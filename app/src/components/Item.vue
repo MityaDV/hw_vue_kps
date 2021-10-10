@@ -186,7 +186,7 @@ export default {
         amount: this.volume.saleInfo.listPrice.amount,
       });
     },
-    chechFormModal() {
+    checkFormModal() {
       if (
         !this.modal.modalFormInput.name ||
         this.modal.modalFormInput.name.length <= 2
@@ -196,7 +196,7 @@ export default {
     },
   },
   created() {
-    this.chechFormModal();
+    this.checkFormModal();
   },
   mounted() {
     EventBus.$on("closeModal", () => (this.modal.showModal.popup_open = false));
