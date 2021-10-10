@@ -18,7 +18,7 @@
               />
             </div>
             <div class="col-md-10">
-              <p class="text-primary smal text-left">
+              <p class="text-primary small text-left">
                 {{ volume.volumeInfo.description }}
               </p>
               <form class="form-horizontal">
@@ -40,11 +40,7 @@
                       v-model.trim="modal.modalFormInput.name"
                       ref="name"
                     />
-                    <b
-                      class="small text-danger"
-                      v-if="modal.errors.error_name"
-                      >{{ modal.errors.textName }}</b
-                    >
+                    <span class="small text-danger"></span>
                   </div>
                 </div>
                 <div class="form-group">
@@ -64,11 +60,7 @@
                       :required="modal.isRequired"
                       v-model.trim="modal.modalFormInput.tel"
                     />
-                    <b
-                      class="small text-danger"
-                      v-if="modal.errors.error_tel"
-                      >{{ modal.errors.textTel }}</b
-                    >
+                    <span class="small text-danger"></span>
                   </div>
                 </div>
                 <div class="form-group">
@@ -88,11 +80,7 @@
                       :required="modal.isRequired"
                       v-model.trim="modal.modalFormInput.email"
                     />
-                    <b
-                      class="small text-danger"
-                      v-if="modal.errors.error_email"
-                      >{{ modal.errors.textEmail }}</b
-                    >
+                    <span class="small text-danger"></span>
                   </div>
                 </div>
                 <button
@@ -157,14 +145,6 @@ export default {
           popup: true,
           popup_open: false,
         },
-        errors: {
-          error_name: false,
-          error_tel: false,
-          error_email: false,
-          textName: "Укажите имя",
-          textTel: "Укажите корректный телефон",
-          textEmail: "Укажите корректный адрес электронной почты",
-        },
       },
     };
   },
@@ -186,18 +166,8 @@ export default {
         amount: this.volume.saleInfo.listPrice.amount,
       });
     },
-    checkFormModal() {
-      if (
-        !this.modal.modalFormInput.name ||
-        this.modal.modalFormInput.name.length <= 2
-      ) {
-        this.modal.errors.error_name = true;
-      }
-    },
   },
-  created() {
-    this.checkFormModal();
-  },
+
   mounted() {
     EventBus.$on("closeModal", () => (this.modal.showModal.popup_open = false));
   },
