@@ -160,4 +160,17 @@ export default {
 .order__table {
   min-width: 250px;
 }
+
+.cart {
+  display: flex;
+  align-items: center;
+
+  & a {
+    margin-right: 15px;
+  }
+
+  & p {
+    max-width: 200px;
+  }
+}
 </style>

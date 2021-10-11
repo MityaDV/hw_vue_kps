@@ -21,71 +21,97 @@
               <p class="text-primary small text-left">
                 {{ volume.volumeInfo.description }}
               </p>
-              <form class="form-horizontal">
-                <div class="form-group">
-                  <label
-                    class="control-label col-md-2"
-                    for="name"
-                    aria-label="Имя пользователя"
+              <form>
+                <div
+                  class="form-group text-left"
+                  :class="{
+                    'form-group--error': $v.modal.modalFormInput.name.$error,
+                  }"
+                >
+                  <label for="name" aria-label="Имя пользователя"
                     >Имя пользователя:</label
                   >
-                  <div class="col-md-10">
-                    <input
-                      class="form-control"
-                      type="text"
-                      id="name"
-                      name="name"
-                      placeholder="Введите ваше имя"
-                      :required="modal.isRequired"
-                      v-model.trim="modal.modalFormInput.name"
-                      ref="name"
-                    />
-                    <span class="small text-danger"></span>
-                  </div>
-                </div>
-                <div class="form-group">
-                  <label
-                    class="control-label col-md-2"
-                    for="phone-number"
-                    aria-label="Ваш телефон"
-                    >Phone number:</label
+                  <input
+                    class="form-control"
+                    type="text"
+                    id="name"
+                    name="name"
+                    placeholder="Введите ваше имя"
+                    v-model.trim="$v.modal.modalFormInput.name.$model"
+                    ref="name"
+                  />
+                  <div
+                    class="small error"
+                    v-if="$v.modal.modalFormInput.name.$error"
                   >
-                  <div class="col-md-10">
-                    <input
-                      class="form-control"
-                      type="tel"
-                      id="phone-number"
-                      name="phone-number"
-                      placeholder="+3 Введите 11 цифр номера"
-                      :required="modal.isRequired"
-                      v-model.trim="modal.modalFormInput.tel"
-                    />
-                    <span class="small text-danger"></span>
+                    <template v-if="!$v.modal.modalFormInput.name.minLength">
+                      Имя должно содержать минимум 2 символа
+                    </template>
+                    <template v-else>
+                      Поле обязательно для заполнения
+                    </template>
                   </div>
                 </div>
-                <div class="form-group">
-                  <label
-                    class="control-label col-md-2"
-                    for="email"
-                    aria-label="Ваш адрес электронной почты"
+
+                <div
+                  class="form-group text-left"
+                  :class="{
+                    'form-group--error': $v.modal.modalFormInput.email.$error,
+                  }"
+                >
+                  <label for="email" aria-label="Ваш адрес электронной почты"
                     >Email:</label
                   >
-                  <div class="col-md-10">
-                    <input
-                      class="form-control"
-                      type="email"
-                      id="email"
-                      name="email"
-                      placeholder="someone@example.com"
-                      :required="modal.isRequired"
-                      v-model.trim="modal.modalFormInput.email"
-                    />
-                    <span class="small text-danger"></span>
+
+                  <input
+                    class="form-control"
+                    type="email"
+                    id="email"
+                    name="email"
+                    placeholder="someone@example.com"
+                    v-model.trim="$v.modal.modalFormInput.email.$model"
+                  />
+                  <div
+                    class="small error"
+                    v-if="$v.modal.modalFormInput.email.$error"
+                  >
+                    <template v-if="!$v.modal.modalFormInput.email.validEmail">
+                      Введите корректный адрес электронной почты
+                    </template>
                   </div>
                 </div>
+
+                <div
+                  class="form-group text-left"
+                  :class="{
+                    'form-group--error': $v.modal.modalFormInput.tel.$error,
+                  }"
+                >
+                  <label for="phone-number" aria-label="Ваш телефон"
+                    >Phone number:</label
+                  >
+
+                  <input
+                    class="form-control"
+                    type="tel"
+                    id="phone-number"
+                    name="phone-number"
+                    v-model.trim="$v.modal.modalFormInput.tel.$model"
+                  />
+                  <div
+                    class="small error"
+                    v-if="$v.modal.modalFormInput.tel.$error"
+                  >
+                    <template v-if="!$v.modal.modalFormInput.tel.validEmail">
+                      Введите номер в формате +380ххххххххх
+                    </template>
+                  </div>
+                </div>
+
                 <button
+                  type="sumit"
                   class="btn btn-info"
-                  :disabled="modal.isButtonDisabled"
+                  :disabled="$v.$invalid"
                   @click.prevent="addProduct"
                 >
                   {{ modal.btnTitle }}
@@ -116,6 +142,19 @@
 
 <script>
 import { EventBus } from "../main";
+import { required, minLength } from "vuelidate/lib/validators";
+import { helpers } from "vuelidate/lib/validators";
+
+const checkValidityEmail = helpers.regex(
+  "checkValidityEmail",
+  /^([A-Za-z0-9_\-.])+@([A-Za-z0-9_\-.])+\.([A-Za-z]{2,4})$/i
+);
+
+const checkValidityTel = helpers.regex(
+  "checkValidityTel",
+  /^\+380\d{3}\d{2}\d{2}\d{2}$/
+);
+
 export default {
   name: "Item",
   props: {
@@ -133,12 +172,9 @@ export default {
       },
       modal: {
         btnTitle: "Отправить",
-        isButtonDisabled: false,
-        isRequired: true,
-
         modalFormInput: {
           name: null,
-          tel: null,
+          tel: "+380",
           email: null,
         },
         showModal: {
@@ -148,7 +184,22 @@ export default {
       },
     };
   },
-
+  validations: {
+    modal: {
+      modalFormInput: {
+        name: {
+          required,
+          minLength: minLength(2),
+        },
+        email: {
+          checkValidityEmail,
+        },
+        tel: {
+          checkValidityTel,
+        },
+      },
+    },
+  },
   methods: {
     openModal() {
       if (this.modal.showModal.popup) {
@@ -176,6 +227,7 @@ export default {
 
 <style lang="scss">
 $color_blue_sky: #00b2ff;
+$color_error: #f04124;
 
 .popup {
   position: fixed;
@@ -215,5 +267,14 @@ $color_blue_sky: #00b2ff;
   animation-name: departure;
   animation-duration: 0.7s;
   will-change: transform;
+}
+
+.error {
+  color: $color_error;
+  position: absolute;
+}
+
+.form-group {
+  position: relative;
 }
 </style>
