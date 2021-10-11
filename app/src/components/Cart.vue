@@ -1,19 +1,21 @@
 <template>
   <div>
-    <h3>{{ title }}</h3>
+    <h3 v-if="isActive">{{ title }}</h3>
   </div>
 </template>
 
 <script>
+import { EventBus } from "../main";
 export default {
   name: "Cart",
   data() {
     return {
       title: "Список заказанных товаров",
+      isActive: true,
     };
   },
   created() {
-    console.log(this.$route);
+    EventBus.$on("clearTitle", () => (this.isActive = false));
   },
 };
 </script>

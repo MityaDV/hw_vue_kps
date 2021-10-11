@@ -34,6 +34,7 @@
       @clickModalButton="clickModal"
     />
 
+    <router-view></router-view>
     <div class="order" v-show="order.isOrder">
       <table class="order__table">
         <tr v-for="(prod, index) in this.cart.products" :key="index">
@@ -44,17 +45,22 @@
           <td>{{ prod.amount }}</td>
         </tr>
       </table>
-      <div>
-        <span></span>
-        <button>{{ order.btnTitle }}</button>
+      <div v-if="order.isTotalOrder">
+        <span>Сумма к оплате: {{ this.cart.total }}</span>
+        <button @click="closeOrder">{{ order.btnTitle }}</button>
       </div>
     </div>
-    <router-view></router-view>
+    <div class="success" v-show="order.isSuccess">
+      <p>
+        {{ `Ваш заказ на сумму ${this.cart.total}  грн. успешно оформлен` }}
+      </p>
+    </div>
   </div>
 </template>
 
 <script>
 import Item from "@/components/Item.vue";
+import { EventBus } from "../main";
 
 export default {
   name: "SearchForm",
@@ -80,6 +86,8 @@ export default {
       order: {
         btnTitle: "Заказать",
         isOrder: false,
+        isSuccess: false,
+        isTotalOrder: true,
       },
 
       result: {
@@ -134,6 +142,13 @@ export default {
     },
     clickModal() {
       this.$emit("clickModalButton");
+    },
+    closeOrder() {
+      EventBus.$emit("clearTitle");
+      this.cart.products = [];
+      this.order.isTotalOrder = false;
+      this.order.isSuccess = true;
+      setTimeout(() => (this.order.isSuccess = false), 2000);
     },
   },
 };
