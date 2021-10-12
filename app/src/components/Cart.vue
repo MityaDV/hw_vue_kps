@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h3 v-if="isActive">{{ title }}</h3>
+    <h3 class="text-success" v-if="isActive">{{ title }}</h3>
   </div>
 </template>
 

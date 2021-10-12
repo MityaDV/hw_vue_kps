@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <ul class="list-group">
+  <div style="display: flex; justify-content: center">
+    <ul class="list-group list">
       <li class="list-group-item">
         <img
           :src="volume.volumeInfo.imageLinks.smallThumbnail"
@@ -121,12 +121,12 @@
           </div>
         </div>
       </li>
-      <li
-        class="list-group-item"
-        v-for="(autor, index) in volume.volumeInfo.authors"
-        :key="index"
-      >
-        <span>{{ autor }}</span>
+      <li class="list-group-item item_autor">
+        <span
+          v-for="(autor, index) in volume.volumeInfo.authors"
+          :key="index"
+          >{{ autor }}</span
+        >
       </li>
       <li class="list-group-item">
         <span>
@@ -276,5 +276,14 @@ $color_error: #f04124;
 
 .form-group {
   position: relative;
+}
+
+.list {
+  flex-basis: 50%;
+}
+
+.item_autor {
+  display: flex;
+  flex-direction: column;
 }
 </style>

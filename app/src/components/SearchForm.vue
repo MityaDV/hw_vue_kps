@@ -22,7 +22,7 @@
             width="50px"
           />
         </router-link>
-        <p v-show="cart.isTextActive">{{ cart.text }}</p>
+        <p class="text-warning" v-show="cart.isTextActive">{{ cart.text }}</p>
       </div>
     </div>
 
@@ -41,17 +41,21 @@
           <td>
             <img :src="prod.img" alt="" />
           </td>
-          <td>{{ prod.desc }}</td>
-          <td>{{ prod.amount }}</td>
+          <td class="small text-info text-left">{{ prod.desc }}</td>
+          <td class="text-primary mark">{{ `${prod.amount} грн.` }}</td>
         </tr>
       </table>
       <div v-if="order.isTotalOrder">
-        <span>Сумма к оплате: {{ this.cart.total }}</span>
-        <button @click="closeOrder">{{ order.btnTitle }}</button>
+        <span class="text-info" style="margin: 0 15px 0 0"
+          >Сумма к оплате: {{ this.cart.total }}</span
+        >
+        <button class="btn btn-primary" @click="closeOrder">
+          {{ order.btnTitle }}
+        </button>
       </div>
     </div>
     <div class="success" v-show="order.isSuccess">
-      <p>
+      <p class="text-success">
         {{ `Ваш заказ на сумму ${this.cart.total}  грн. успешно оформлен` }}
       </p>
     </div>
@@ -71,7 +75,6 @@ export default {
     return {
       url: process.env.VUE_APP_URL,
       type: this.$route.params.type,
-
       form: {
         searchText: "",
         btnTitle: "Отправить",
@@ -89,7 +92,6 @@ export default {
         isSuccess: false,
         isTotalOrder: true,
       },
-
       result: {
         items: [],
       },
@@ -155,6 +157,8 @@ export default {
 </script>
 
 <style lang="scss">
+$color_success: #02c232;
+
 .wrapper {
   display: flex;
   flex-wrap: wrap;
@@ -187,5 +191,17 @@ export default {
   & p {
     max-width: 200px;
   }
+}
+
+.success {
+  width: 500px;
+  min-height: 300px;
+  background-color: rgb(250, 250, 250);
+  box-shadow: 0 10px 20px rgba(4, 6, 6, 0.2);
+  outline: 1px solid $color_success;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
 }
 </style>
