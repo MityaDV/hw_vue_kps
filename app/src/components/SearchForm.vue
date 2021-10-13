@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="wrapper">
-      <div class="form">
+      <div class="form col-md-4">
         <div class="form-group">
           <input
             class="form-control"
@@ -14,7 +14,7 @@
           {{ form.btnTitle }}
         </button>
       </div>
-      <div class="cart">
+      <div class="cart col-md-4">
         <router-link to="/cart">
           <img
             src="../assets/images/pngegg.png"
@@ -30,24 +30,32 @@
       v-for="item in result.items"
       :volume="item"
       :key="item.id"
-      @priceproduct="getTextOrder"
       @clickModalButton="clickModal"
     />
 
     <router-view></router-view>
-    <div class="order" v-show="order.isOrder">
-      <table class="order__table">
-        <tr v-for="(prod, index) in this.cart.products" :key="index">
-          <td>
+
+    <div v-show="order.isOrder">
+      <table>
+        <tr
+          class="row"
+          v-for="(prod, index) in this.cart.products"
+          :key="index"
+        >
+          <td class="col-md-2">
             <img :src="prod.img" alt="" />
           </td>
-          <td class="small text-info text-left">{{ prod.desc }}</td>
-          <td class="text-primary mark">{{ `${prod.amount} грн.` }}</td>
+          <td class="col-md-8 small text-info text-left">
+            {{ prod.desc }}
+          </td>
+          <td class="col-md-2 text-danger mark lead">
+            {{ `${prod.amount} грн.` }}
+          </td>
         </tr>
       </table>
-      <div v-if="order.isTotalOrder">
-        <span class="text-info" style="margin: 0 15px 0 0"
-          >Сумма к оплате: {{ this.cart.total }}</span
+      <div style="margin: 15px 0 0" v-if="order.isTotalOrder">
+        <span class="lead text-info" style="margin: 0 15px 0 0"
+          ><u>Сумма к оплате: {{ this.cart.total }}</u></span
         >
         <button class="btn btn-primary" @click="closeOrder">
           {{ order.btnTitle }}
@@ -126,16 +134,13 @@ export default {
         });
       this.form.searchText = "";
     },
-    getTextOrder(obj) {
+    getInfoOrder(obj) {
       this.cart.isTextActive = true;
       this.cart.count++;
       this.cart.total += obj.amount;
       this.cart.text = `Добавлено ${
         this.cart.count
       } товар(ов) на сумму ${+this.cart.total.toFixed(2)} грн.`;
-      this.getProductCart(obj);
-    },
-    getProductCart(obj) {
       let cartProduct = {};
       cartProduct.img = obj.img;
       cartProduct.desc = obj.desc;
@@ -150,8 +155,11 @@ export default {
       this.cart.products = [];
       this.order.isTotalOrder = false;
       this.order.isSuccess = true;
-      setTimeout(() => (this.order.isSuccess = false), 2000);
+      setTimeout(() => (this.order.isSuccess = false), 5000);
     },
+  },
+  mounted() {
+    EventBus.$on("priceproduct", (obj) => this.getInfoOrder(obj));
   },
 };
 </script>
@@ -164,20 +172,7 @@ $color_success: #02c232;
   flex-wrap: wrap;
   justify-content: center;
   align-items: flex-start;
-}
-
-.form {
-  margin-right: 15px;
-}
-
-.order {
-  display: flex;
-  flex-wrap: wrap;
-  flex-direction: column;
-}
-
-.order__table {
-  min-width: 250px;
+  margin: 0 0 15px calc(100% - (100% - 25%));
 }
 
 .cart {
@@ -185,16 +180,12 @@ $color_success: #02c232;
   align-items: center;
 
   & a {
-    margin-right: 15px;
-  }
-
-  & p {
-    max-width: 200px;
+    padding-right: 10px;
   }
 }
 
 .success {
-  width: 500px;
+  min-width: 300px;
   min-height: 300px;
   background-color: rgb(250, 250, 250);
   box-shadow: 0 10px 20px rgba(4, 6, 6, 0.2);

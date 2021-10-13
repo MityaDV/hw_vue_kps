@@ -1,5 +1,5 @@
 <template>
-  <div style="display: flex; justify-content: center">
+  <div class="item">
     <ul class="list-group list">
       <li class="list-group-item">
         <img
@@ -11,13 +11,13 @@
         <h3 class="text-primary">{{ volume.volumeInfo.title }}</h3>
         <div class="container-fluid" :class="modal.showModal">
           <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-4">
               <img
                 :src="volume.volumeInfo.imageLinks.smallThumbnail"
                 :alt="card.imgAlt"
               />
             </div>
-            <div class="col-md-10">
+            <div class="col-md-8">
               <p class="text-primary small text-left">
                 {{ volume.volumeInfo.description }}
               </p>
@@ -109,7 +109,7 @@
                 </div>
 
                 <button
-                  type="sumit"
+                  type="submit"
                   class="btn btn-info"
                   :disabled="$v.$invalid"
                   @click.prevent="addProduct"
@@ -133,10 +133,10 @@
           {{ volume.volumeInfo.publishedDate }}
         </span>
       </li>
-      <button class="btn btn-primary" @click.prevent="openModal">
-        {{ card.btnTitle }}
-      </button>
     </ul>
+    <button class="btn btn-primary" @click.prevent="openModal">
+      {{ card.btnTitle }}
+    </button>
   </div>
 </template>
 
@@ -211,11 +211,12 @@ export default {
       }
     },
     addProduct() {
-      this.$emit("priceproduct", {
+      EventBus.$emit("priceproduct", {
         img: this.volume.volumeInfo.imageLinks.smallThumbnail,
         desc: this.volume.volumeInfo.description,
         amount: this.volume.saleInfo.listPrice.amount,
       });
+      this.modal.showModal.popup_open = false;
     },
   },
 
@@ -229,6 +230,19 @@ export default {
 $color_blue_sky: #00b2ff;
 $color_error: #f04124;
 
+.item {
+  display: flex;
+  // align-items: center;
+  flex-direction: column;
+  min-width: 300px;
+  max-width: 300px;
+  margin: 0 auto 15px;
+}
+
+.list {
+  margin-bottom: 0;
+}
+
 .popup {
   position: fixed;
   top: 50%;
@@ -236,7 +250,7 @@ $color_error: #f04124;
   z-index: 100;
 
   display: none;
-  width: 900px;
+  // width: 900px;
   padding: 15px;
   outline: 1px solid $color_blue_sky;
   background-color: rgb(250, 250, 250);
@@ -276,10 +290,6 @@ $color_error: #f04124;
 
 .form-group {
   position: relative;
-}
-
-.list {
-  flex-basis: 50%;
 }
 
 .item_autor {

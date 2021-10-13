@@ -39,6 +39,12 @@ export default {
       }
     },
   },
+  mounted() {
+    EventBus.$on("priceproduct", () => {
+      this.showOverlay.overlay_open = false;
+      document.querySelector("body").style.overflow = "visible";
+    });
+  },
 };
 </script>
 
