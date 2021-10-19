@@ -67,4 +67,12 @@ export default {
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {},
+
+  env: {
+    BASE_APP_URL: 'https://www.googleapis.com/books/v1/volumes?q=',
+  },
+
+  publicRuntimeConfig: {
+    baseURL: 'https://www.googleapis.com/books/v1/volumes?q=',
+  },
 }
