@@ -1,6 +1,9 @@
 <template>
-  <v-row class="align-start">
-    <v-col>
+  <v-row
+    class="align-start justify-center"
+    style="margin: 0 0 15px calc(100% - (100% - 25%))"
+  >
+    <v-col class="col-md-6">
       <v-form class="d-flex justify-center flex-wrap">
         <v-text-field
           v-model.trim="form.searchText"
@@ -18,19 +21,21 @@
         </v-btn>
       </v-form>
     </v-col>
-    <v-col class="d-flex">
+    <v-col class="d-flex col-md-4">
       <nuxt-link to="/cart" class="d-block">
         <img src="/pngegg.png" alt="Изображение корзины" width="50px"
       /></nuxt-link>
     </v-col>
+    {{ $store.state }}
   </v-row>
 </template>
 
 <script>
 export default {
+  name: 'HomePage',
+  layout: 'SearchBooks',
   data() {
     return {
-      // url: process.env.baseURL,
       items: [],
       form: {
         searchText: '',
@@ -57,6 +62,7 @@ export default {
             this.items.push(it)
           }
         })
+      this.$store.dispatch('getItems', this.items)
       this.form.searchText = ''
     },
   },
