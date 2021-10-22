@@ -1,4 +1,5 @@
 import Vue from "vue";
+import store from "./store";
 import VueRouter from "vue-router";
 import Vuelidate from "vuelidate";
 import App from "./App.vue";
@@ -18,6 +19,7 @@ const router = new VueRouter({
 });
 
 new Vue({
+  store,
   router,
   render: (h) => h(App),
 }).$mount("#app");

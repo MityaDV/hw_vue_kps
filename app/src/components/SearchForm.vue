@@ -6,12 +6,12 @@
           <input
             class="form-control"
             type="text"
-            v-model.trim="form.searchText"
+            v-model.trim="searchText"
             @keyup.enter="fetchBooks"
           />
         </div>
         <button class="btn btn-primary" @click="fetchBooks">
-          {{ form.btnTitle }}
+          {{ btnFormTitle }}
         </button>
       </div>
       <div class="cart col-md-4">
@@ -27,7 +27,7 @@
     </div>
 
     <Item
-      v-for="item in result.items"
+      v-for="item in items"
       :volume="item"
       :key="item.id"
       @clickModalButton="clickModal"
@@ -57,9 +57,9 @@
         <span class="lead text-info" style="margin: 0 15px 0 0"
           ><u>Сумма к оплате: {{ this.cart.total }}</u></span
         >
-        <button class="btn btn-primary" @click="closeOrder">
+        <router-link to="/" class="btn btn-primary" @click="closeOrder">
           {{ order.btnTitle }}
-        </button>
+        </router-link>
       </div>
     </div>
     <div class="success" v-show="order.isSuccess">
@@ -73,6 +73,7 @@
 <script>
 import Item from "@/components/Item.vue";
 import { EventBus } from "../main";
+import { mapGetters } from "vuex";
 
 export default {
   name: "SearchForm",
@@ -83,10 +84,8 @@ export default {
     return {
       url: process.env.VUE_APP_URL,
       type: this.$route.params.type,
-      form: {
-        searchText: "",
-        btnTitle: "Отправить",
-      },
+      searchText: "",
+      btnFormTitle: "Отправить",
       cart: {
         isTextActive: false,
         text: "",
@@ -100,39 +99,25 @@ export default {
         isSuccess: false,
         isTotalOrder: true,
       },
-      result: {
-        items: [],
-      },
     };
   },
   watch: {
     $route: function (newValue) {
       this.type = newValue.params.type;
-      this.result.items = [];
+      this.$store.commit("cleanItems");
       this.cart.isTextActive = false;
       this.order.isOrder = true;
     },
   },
+  computed: {
+    ...mapGetters({
+      items: "getItems",
+    }),
+  },
   methods: {
     fetchBooks() {
-      let init_items = [1, 2, 3, 4, 5, 6, 7];
-      this.result.items = [];
-
-      if (this.form.searchText == "") {
-        alert("Поле не может быть пустым!");
-        return;
-      }
-      fetch(this.url + this.form.searchText, {
-        method: "GET",
-      })
-        .then((response) => response.json())
-        .then((json) => {
-          for (const i in init_items) {
-            const it = json.items[i];
-            this.result.items.push(it);
-          }
-        });
-      this.form.searchText = "";
+      this.$store.dispatch("getItems", this.url + this.searchText);
+      this.searchText = "";
     },
     getInfoOrder(obj) {
       this.cart.isTextActive = true;
@@ -154,6 +139,7 @@ export default {
       EventBus.$emit("clearTitle");
       this.cart.products = [];
       this.order.isTotalOrder = false;
+      this.order.isOrder = false;
       this.order.isSuccess = true;
       setTimeout(() => (this.order.isSuccess = false), 5000);
     },
