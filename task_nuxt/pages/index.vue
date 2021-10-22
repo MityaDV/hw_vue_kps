@@ -46,7 +46,6 @@ export default {
       },
     }
   },
-
   methods: {
     fetchBooks() {
       const initItems = [1, 2, 3, 4, 5, 6, 7]
@@ -62,7 +61,6 @@ export default {
             this.items.push(it)
           }
         })
-      this.$store.dispatch('getItems', this.items)
       this.form.searchText = ''
     },
   },

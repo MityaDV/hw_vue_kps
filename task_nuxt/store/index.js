@@ -11,8 +11,4 @@ export const mutations = {
   },
 }
 
-export const actions = {
-  getItems({ commit }, items) {
-    commit('takeItems', items)
-  },
-}
+export const actions = {}
