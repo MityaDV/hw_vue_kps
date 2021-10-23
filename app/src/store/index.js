@@ -6,10 +6,14 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     items: [],
+    products: [],
   },
   getters: {
     getItems(state) {
       return state.items;
+    },
+    getProducts(state) {
+      return state.products;
     },
   },
   mutations: {
@@ -18,6 +22,12 @@ export default new Vuex.Store({
     },
     cleanItems(state) {
       state.items = [];
+    },
+    addProduct(state, product) {
+      state.products.push(product);
+    },
+    cleanProducts(state) {
+      state.products = [];
     },
   },
   actions: {

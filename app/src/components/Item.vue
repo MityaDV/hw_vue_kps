@@ -164,7 +164,7 @@ export default {
   data() {
     return {
       isActive: false,
-
+      price: 0,
       card: {
         imgAlt: "Изображение обложки тома",
         btnTitle: "Заказать",
@@ -210,11 +210,9 @@ export default {
       }
     },
     addProduct() {
-      EventBus.$emit("priceproduct", {
-        img: this.volume.volumeInfo.imageLinks.smallThumbnail,
-        desc: this.volume.volumeInfo.description,
-        amount: this.volume.saleInfo.listPrice.amount,
-      });
+      this.$store.commit("addProduct", this.volume);
+      this.price = this.volume.saleInfo.listPrice.amount;
+      EventBus.$emit("priceproduct", this.price);
       this.modal.showModal.popup_open = false;
     },
   },
@@ -249,7 +247,6 @@ $color_error: #f04124;
   z-index: 100;
 
   display: none;
-  // width: 900px;
   padding: 15px;
   outline: 1px solid $color_blue_sky;
   background-color: rgb(250, 250, 250);

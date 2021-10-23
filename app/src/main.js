@@ -12,7 +12,14 @@ Vue.use(Vuelidate);
 
 export const EventBus = new Vue();
 
-const routes = [{ path: "/cart", component: Cart }];
+const routes = [
+  {
+    path: "/cart",
+    name: "cart",
+    component: Cart,
+    props: true,
+  },
+];
 const router = new VueRouter({
   routes,
   mode: "history",
