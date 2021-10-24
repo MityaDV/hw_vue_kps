@@ -7,7 +7,7 @@
   >
     <h2 class="text-primary">{{ title }}</h2>
 
-    <SearchForm @clickModalButton="showOverlayScreen" />
+    <SearchForm />
 
     <div class="cart col-md-4">
       <router-link
@@ -61,7 +61,15 @@ export default {
       },
     };
   },
-  watch: {},
+  watch: {
+    $route: function (newValue, oldValue) {
+      if (newValue.name === "cart") {
+        return;
+      } else if (oldValue.name === "cart") {
+        this.closeCart();
+      }
+    },
+  },
   methods: {
     getInfoOrder(price) {
       this.isTextActive = true;
@@ -85,7 +93,7 @@ export default {
         EventBus.$emit("closeModal");
       }
     },
-    closeOrder() {
+    closeCart() {
       this.isSuccess = true;
       this.isTextActive = false;
       setTimeout(() => (this.isSuccess = false), 5000);
@@ -98,6 +106,7 @@ export default {
       this.showOverlay.overlay_open = false;
       document.querySelector("body").style.overflow = "visible";
     });
+    EventBus.$on("clickModalButton", () => this.showOverlayScreen());
   },
 };
 </script>

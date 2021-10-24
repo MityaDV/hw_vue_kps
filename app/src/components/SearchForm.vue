@@ -16,12 +16,7 @@
       </div>
     </div>
 
-    <Item
-      v-for="item in items"
-      :volume="item"
-      :key="item.id"
-      @clickModalButton="clickModal"
-    />
+    <Item v-for="item in items" :volume="item" :key="item.id" />
   </div>
 </template>
 
@@ -57,10 +52,6 @@ export default {
       this.$store.dispatch("getItems", this.url + this.searchText);
       this.searchText = "";
     },
-
-    clickModal() {
-      this.$emit("clickModalButton");
-    },
   },
 };
 </script>
@@ -73,6 +64,7 @@ $color_success: #02c232;
   flex-wrap: wrap;
   justify-content: center;
   align-items: flex-start;
+  margin-bottom: 15px;
   // margin: 0 0 15px calc(100% - (100% - 25%));
 }
 

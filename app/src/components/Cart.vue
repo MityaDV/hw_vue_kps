@@ -23,7 +23,7 @@
         <span class="lead text-info" style="margin: 0 15px 0 0"
           ><u>Сумма к оплате: {{ total }}</u></span
         >
-        <router-link to="/" class="btn btn-primary" @click="closeOrder">
+        <router-link to="/" class="btn btn-primary">
           {{ order.btnTitle }}
         </router-link>
       </div>
@@ -45,6 +45,7 @@ export default {
         isSuccess: false,
         isTotalOrder: true,
         products: [],
+        priceProd: 0,
       },
     };
   },
@@ -52,10 +53,15 @@ export default {
   methods: {
     getProtuctsOrder() {
       this.order.products = this.$store.getters.getProducts;
+      this.order.products.forEach((it) => {
+        if ("listPrice" in it.saleInfo) {
+          return;
+        } else {
+          it.saleInfo.listPrice.amount = 0;
+        }
+      });
+
       this.order.isOrder = true;
-    },
-    closeOrder() {
-      EventBus.$emit("closeOrder");
     },
   },
   created() {

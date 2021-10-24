@@ -203,7 +203,7 @@ export default {
     openModal() {
       if (this.modal.showModal.popup) {
         this.modal.showModal.popup_open = true;
-        this.$emit("clickModalButton");
+        EventBus.$emit("clickModalButton");
         this.$nextTick(() => {
           this.$refs.name.focus();
         });
@@ -211,7 +211,12 @@ export default {
     },
     addProduct() {
       this.$store.commit("addProduct", this.volume);
-      this.price = this.volume.saleInfo.listPrice.amount;
+      if ("listPrice" in this.volume.saleInfo) {
+        this.price = this.volume.saleInfo.listPrice.amount;
+      } else {
+        this.price = 0;
+      }
+      // this.price = this.volume.saleInfo.listPrice.amount;
       EventBus.$emit("priceproduct", this.price);
       this.modal.showModal.popup_open = false;
     },
