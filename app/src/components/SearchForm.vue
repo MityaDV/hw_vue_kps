@@ -1,22 +1,22 @@
 <template>
-  <div>
-    <div class="wrapper">
-      <div class="form col-md-4">
-        <div class="form-group">
-          <input
-            class="form-control"
-            type="text"
-            v-model.trim="searchText"
-            @keyup.enter="fetchBooks"
-          />
-        </div>
-        <button class="btn btn-primary" @click="fetchBooks">
-          {{ btnFormTitle }}
-        </button>
+  <div class="wrapper">
+    <div class="form">
+      <div class="form-group">
+        <input
+          class="form-control"
+          type="text"
+          v-model.trim="searchText"
+          @keyup.enter="fetchBooks"
+        />
       </div>
+      <button class="btn btn-primary" @click="fetchBooks">
+        {{ btnFormTitle }}
+      </button>
     </div>
 
-    <Item v-for="item in items" :volume="item" :key="item.id" />
+    <div class="wrapper__item">
+      <Item v-for="item in items" :volume="item" :key="item.id" />
+    </div>
   </div>
 </template>
 
@@ -58,14 +58,21 @@ export default {
 
 <style lang="scss">
 $color_success: #02c232;
-
 .wrapper {
   display: flex;
-  flex-wrap: wrap;
+  flex-flow: wrap;
   justify-content: center;
-  align-items: flex-start;
+}
+
+.form {
+  flex: 0 1 50%;
   margin-bottom: 15px;
-  // margin: 0 0 15px calc(100% - (100% - 25%));
+}
+
+.wrapper__item {
+  display: flex;
+  flex-flow: column;
+  flex: 100%;
 }
 
 .success {

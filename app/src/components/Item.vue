@@ -216,7 +216,6 @@ export default {
       } else {
         this.price = 0;
       }
-      // this.price = this.volume.saleInfo.listPrice.amount;
       EventBus.$emit("priceproduct", this.price);
       this.modal.showModal.popup_open = false;
     },
@@ -234,7 +233,6 @@ $color_error: #f04124;
 
 .item {
   display: flex;
-  // align-items: center;
   flex-direction: column;
   min-width: 300px;
   max-width: 300px;

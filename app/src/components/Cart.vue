@@ -2,7 +2,7 @@
   <div>
     <h3 class="text-success">{{ title }}</h3>
     <div v-show="order.isOrder">
-      <table>
+      <table class="table-bordered">
         <tr
           class="row"
           v-for="(prod, index) in this.order.products"
@@ -45,7 +45,11 @@ export default {
         isSuccess: false,
         isTotalOrder: true,
         products: [],
-        priceProd: 0,
+        priceProd: {
+          listPrice: {
+            amount: 0,
+          },
+        },
       },
     };
   },
@@ -57,7 +61,7 @@ export default {
         if ("listPrice" in it.saleInfo) {
           return;
         } else {
-          it.saleInfo.listPrice.amount = 0;
+          it.saleInfo += this.order.priceProd;
         }
       });
 

@@ -9,7 +9,7 @@
 
     <SearchForm />
 
-    <div class="cart col-md-4">
+    <div class="cart">
       <router-link
         :to="{ name: 'cart', params: { total: total } }"
         tag="div"
@@ -22,17 +22,19 @@
           width="50px"
         />
       </router-link>
-      <p class="text-warning" v-show="isTextActive">{{ textOrder }}</p>
+      <p v-show="isTextActive" style="margin-left: 10px; color: #fdefa6">
+        {{ textOrder }}
+      </p>
     </div>
 
     <router-view></router-view>
 
     <div :class="showOverlay" @click.left="closeOverlayScreen"></div>
 
-    <div class="success" v-show="isSuccess">
-      <p class="text-success">
-        {{ `Ваш заказ на сумму ${this.total}  грн. успешно оформлен` }}
-      </p>
+    <div class="text-success success" v-show="isSuccess">
+      <h2 class="lead">
+        {{ `Ваш заказ на сумму ${this.total}  грн. успешно оформлен !` }}
+      </h2>
     </div>
   </div>
 </template>
@@ -96,7 +98,12 @@ export default {
     closeCart() {
       this.isSuccess = true;
       this.isTextActive = false;
-      setTimeout(() => (this.isSuccess = false), 5000);
+
+      setTimeout(() => {
+        this.isSuccess = false;
+        this.count = 0;
+        this.total = 0;
+      }, 5000);
     },
   },
 
@@ -121,21 +128,17 @@ export default {
   margin-top: 60px;
 }
 
-li {
-  list-style: none;
-}
-
 .cart {
   display: flex;
   align-items: center;
-  position: absolute;
+  justify-content: center;
   cursor: pointer;
+  position: fixed;
   top: 0;
-  right: 0;
-
-  & a {
-    padding-right: 10px;
-  }
+  left: 0;
+  padding: 10px;
+  background-color: rgba(51, 122, 183, 0.8);
+  width: 100%;
 }
 
 .overlay {
