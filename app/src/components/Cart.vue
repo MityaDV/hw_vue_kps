@@ -45,11 +45,8 @@ export default {
         isSuccess: false,
         isTotalOrder: true,
         products: [],
-        priceProd: {
-          listPrice: {
-            amount: 0,
-          },
-        },
+        // listPrice: "listPrice",
+        // amountValue: new Object(),
       },
     };
   },
@@ -61,7 +58,8 @@ export default {
         if ("listPrice" in it.saleInfo) {
           return;
         } else {
-          it.saleInfo += this.order.priceProd;
+          // it.saleInfo[this.order.listPrice] +=
+          //   this.order.amountValue.amount = 0;
         }
       });
 
