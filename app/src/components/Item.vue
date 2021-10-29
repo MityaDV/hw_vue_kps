@@ -271,6 +271,7 @@ $color_not_for_sale: rgba(238, 238, 238, 0.7);
     line-height: 18px;
     padding: 12px 0 0;
     color: $color_error;
+    transform: rotate(15deg);
   }
 }
 
