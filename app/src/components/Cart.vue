@@ -2,9 +2,9 @@
   <div>
     <h3 class="text-success">{{ title }}</h3>
     <div v-show="order.isOrder">
-      <table class="table-bordered">
+      <table class="table table-bordered">
         <tr
-          class="row"
+          class="row table-bordered"
           v-for="(prod, index) in this.order.products"
           :key="index"
         >
@@ -15,11 +15,8 @@
             {{ prod.volumeInfo.description }}
           </td>
           <td class="col-md-2 text-danger mark lead">
-            {{ `${order.price} грн.` }}
+            {{ `${prod.saleInfo.listPrice.amount} грн.` }}
           </td>
-          <!-- <td v-else class="col-md-2 text-danger mark lead">
-            {{ `${order.price} грн.` }}
-          </td> -->
         </tr>
       </table>
       <div style="margin: 15px 0 0" v-if="order.isTotalOrder">
@@ -48,26 +45,13 @@ export default {
         isSuccess: false,
         isTotalOrder: true,
         products: [],
-        price: 0,
-        // forSale: true,
       },
     };
   },
 
   methods: {
     getProtuctsOrder() {
-      this.$store.getters.getProducts.forEach((it) => {
-        if (it.saleInfo.saleability === "FOR_SALE") {
-          this.order.price = it.saleInfo.listPrice.amount;
-          this.order.products.push(it);
-          return;
-        } else if (it.saleInfo.saleability === "NOT_FOR_SALE") {
-          this.order.price = 0;
-          this.order.products.push(it);
-          // this.order.forSale = false;
-        }
-      });
-
+      this.order.products = this.$store.getters.getProducts;
       this.order.isOrder = true;
     },
   },

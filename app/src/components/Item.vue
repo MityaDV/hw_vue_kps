@@ -26,8 +26,8 @@
     <button class="btn btn-primary" @click.prevent="openModal">
       {{ card.btnTitle }}
     </button>
-    <button @click="checkVolume">Check</button>
-
+    <!-- <button @click="checkVolume">Check</button> -->
+    <div v-if="notForSale" class="not_for_sale"></div>
     <div class="container-fluid" :class="modal.showModal">
       <div class="row">
         <div class="col-md-4">
@@ -167,7 +167,7 @@ export default {
       isActive: false,
       product: {},
       price: 0,
-      notForSale: "",
+      notForSale: false,
       card: {
         imgAlt: "Изображение обложки тома",
         btnTitle: "Заказать",
@@ -204,30 +204,22 @@ export default {
   },
   methods: {
     openModal() {
-      if (this.modal.showModal.popup) {
-        this.modal.showModal.popup_open = true;
-        EventBus.$emit("clickModalButton");
-        this.$nextTick(() => {
-          this.$refs.name.focus();
-        });
+      if (this.volume.saleInfo.saleability === "FOR_SALE") {
+        if (this.modal.showModal.popup) {
+          this.modal.showModal.popup_open = true;
+          EventBus.$emit("clickModalButton");
+          this.$nextTick(() => {
+            this.$refs.name.focus();
+          });
+        }
+      } else if (this.volume.saleInfo.saleability === "NOT_FOR_SALE") {
+        this.notForSale = true;
       }
     },
-    checkVolume() {
-      this.product = this.volume;
-
-      if (this.product.saleInfo.saleability === "FOR_SALE") {
-        this.price = this.product.saleInfo.listPrice.amount;
-      } else if (this.product.saleInfo.saleability === "NOT_FOR_SALE") {
-        this.price = 0;
-      }
-      console.log(this.product.saleInfo);
-    },
-
     addProduct() {
-      this.checkVolume();
+      this.price = this.volume.saleInfo.listPrice.amount;
       EventBus.$emit("priceproduct", this.price);
-      this.$store.commit("addProduct", this.product);
-
+      this.$store.commit("addProduct", this.volume);
       this.modal.showModal.popup_open = false;
     },
   },
@@ -240,10 +232,12 @@ export default {
 <style lang="scss">
 $color_blue_sky: #00b2ff;
 $color_error: #f04124;
+$color_not_for_sale: rgba(238, 238, 238, 0.7);
 
 .item {
   display: flex;
   flex-direction: column;
+  position: relative;
   min-width: 300px;
   max-width: 300px;
   margin: 0 auto 15px;
@@ -251,6 +245,33 @@ $color_error: #f04124;
 
 .list {
   margin-bottom: 0;
+}
+
+.not_for_sale {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 50;
+  background-color: $color_not_for_sale;
+
+  &::before {
+    content: "NOT FOR SALE";
+    position: absolute;
+    top: 2%;
+    right: 2%;
+    width: 60px;
+    height: 60px;
+    font-weight: bold;
+    border-color: transparent;
+    border: 2px solid $color_error;
+    border-radius: 50%;
+    font-size: 10px;
+    line-height: 18px;
+    padding: 12px 0 0;
+    color: $color_error;
+  }
 }
 
 .popup {
