@@ -26,6 +26,7 @@
     <button class="btn btn-primary" @click.prevent="openModal">
       {{ card.btnTitle }}
     </button>
+    <button @click="checkVolume">Check</button>
 
     <div class="container-fluid" :class="modal.showModal">
       <div class="row">
@@ -164,7 +165,9 @@ export default {
   data() {
     return {
       isActive: false,
+      product: {},
       price: 0,
+      notForSale: "",
       card: {
         imgAlt: "Изображение обложки тома",
         btnTitle: "Заказать",
@@ -209,18 +212,25 @@ export default {
         });
       }
     },
-    addProduct() {
-      this.$store.commit("addProduct", this.volume);
-      if ("listPrice" in this.volume.saleInfo) {
-        this.price = this.volume.saleInfo.listPrice.amount;
-      } else {
+    checkVolume() {
+      this.product = this.volume;
+
+      if (this.product.saleInfo.saleability === "FOR_SALE") {
+        this.price = this.product.saleInfo.listPrice.amount;
+      } else if (this.product.saleInfo.saleability === "NOT_FOR_SALE") {
         this.price = 0;
       }
+      console.log(this.product.saleInfo);
+    },
+
+    addProduct() {
+      this.checkVolume();
       EventBus.$emit("priceproduct", this.price);
+      this.$store.commit("addProduct", this.product);
+
       this.modal.showModal.popup_open = false;
     },
   },
-
   mounted() {
     EventBus.$on("closeModal", () => (this.modal.showModal.popup_open = false));
   },
