@@ -15,8 +15,11 @@
             {{ prod.volumeInfo.description }}
           </td>
           <td class="col-md-2 text-danger mark lead">
-            {{ `${prod.saleInfo.listPrice.amount} грн.` }}
+            {{ `${order.price} грн.` }}
           </td>
+          <!-- <td v-else class="col-md-2 text-danger mark lead">
+            {{ `${order.price} грн.` }}
+          </td> -->
         </tr>
       </table>
       <div style="margin: 15px 0 0" v-if="order.isTotalOrder">
@@ -45,21 +48,23 @@ export default {
         isSuccess: false,
         isTotalOrder: true,
         products: [],
-        // listPrice: "listPrice",
-        // amountValue: new Object(),
+        price: 0,
+        // forSale: true,
       },
     };
   },
 
   methods: {
     getProtuctsOrder() {
-      this.order.products = this.$store.getters.getProducts;
-      this.order.products.forEach((it) => {
-        if ("listPrice" in it.saleInfo) {
+      this.$store.getters.getProducts.forEach((it) => {
+        if (it.saleInfo.saleability === "FOR_SALE") {
+          this.order.price = it.saleInfo.listPrice.amount;
+          this.order.products.push(it);
           return;
-        } else {
-          // it.saleInfo[this.order.listPrice] +=
-          //   this.order.amountValue.amount = 0;
+        } else if (it.saleInfo.saleability === "NOT_FOR_SALE") {
+          this.order.price = 0;
+          this.order.products.push(it);
+          // this.order.forSale = false;
         }
       });
 
