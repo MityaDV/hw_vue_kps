@@ -21,11 +21,11 @@
         </v-btn>
       </v-form>
     </v-col>
-    <v-col class="d-flex col-md-4">
+    <v-app-bar>
       <nuxt-link to="/cart" class="d-block">
         <img src="/pngegg.png" alt="Изображение корзины" width="50px"
       /></nuxt-link>
-    </v-col>
+    </v-app-bar>
     {{ $store.state }}
   </v-row>
 </template>
@@ -33,7 +33,7 @@
 <script>
 export default {
   name: 'HomePage',
-  layout: 'SearchBooks',
+  // layout: 'SearchBooks',
   data() {
     return {
       items: [],

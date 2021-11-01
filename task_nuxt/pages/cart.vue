@@ -9,6 +9,6 @@
 <script>
 export default {
   name: 'CartPage',
-  layout: 'SearchBooks',
+  // layout: 'SearchBooks',
 }
 </script>
