@@ -1,16 +1,20 @@
 <template>
-  <v-row
-    class="align-start justify-center"
-    style="margin: 0 0 15px calc(100% - (100% - 25%))"
-  >
-    <v-col class="col-md-6">
+  <v-row justify="center" align="center">
+    <v-col class="d-flex justify-center" cols="12" lg="12" md="6">
+      <nuxt-link to="/cart">
+        <v-img src="/pngegg.png" width="50px"></v-img>
+      </nuxt-link>
+      <v-card-text>
+        <p>Текст заказа</p>
+      </v-card-text>
+    </v-col>
+    <v-col cols="12" lg="6">
       <v-form class="d-flex justify-center flex-wrap">
         <v-text-field
           v-model.trim="form.searchText"
           style="flex-basis: 100%"
           type="text"
           solo
-          :rules="form.rules"
           :autofocus="form.autofocus"
           :clearable="form.clearable"
           required
@@ -21,12 +25,8 @@
         </v-btn>
       </v-form>
     </v-col>
-    <v-app-bar>
-      <nuxt-link to="/cart" class="d-block">
-        <img src="/pngegg.png" alt="Изображение корзины" width="50px"
-      /></nuxt-link>
-    </v-app-bar>
-    {{ $store.state }}
+
+    <!-- {{ $store.state }} -->
   </v-row>
 </template>
 
@@ -42,7 +42,6 @@ export default {
         btnTitle: 'Отправить',
         autofocus: true,
         clearable: true,
-        rules: [(v) => !!v || 'Поле не должно быть пустым'],
       },
     }
   },
