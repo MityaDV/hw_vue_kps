@@ -11,7 +11,7 @@
     <v-col cols="12" lg="6">
       <v-form class="d-flex justify-center flex-wrap">
         <v-text-field
-          v-model.trim="form.searchText"
+          v-model.trim="searchText"
           style="flex-basis: 100%"
           type="text"
           solo
@@ -33,14 +33,16 @@ export default {
   name: 'HomePage',
   data() {
     return {
+      query: this.$route.query,
+      searchText: '',
       form: {
-        searchText: '',
         btnTitle: 'Отправить',
         autofocus: true,
         clearable: true,
       },
     }
   },
+
   methods: {},
 }
 </script>
