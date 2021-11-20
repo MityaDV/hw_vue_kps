@@ -19,7 +19,6 @@ export default {
   },
   data() {
     return {
-      // env: process.env.BASE_APP_URL,
     }
   },
 }

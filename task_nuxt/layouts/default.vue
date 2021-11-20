@@ -7,6 +7,8 @@
     </v-app-bar>
     <v-main>
       <v-container>
+        <cart />
+        <search-form />
         <Nuxt />
       </v-container>
     </v-main>
@@ -17,7 +19,14 @@
 </template>
 
 <script>
+import SearchForm from './../components/SearchForm'
+import Cart from './../components/Cart'
 export default {
+  name: 'Default',
+  components: {
+    Cart,
+    SearchForm,
+  },
   data() {
     return {
       fixed: true,
