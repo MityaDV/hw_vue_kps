@@ -27,32 +27,32 @@ import { mapGetters } from "vuex";
 export default {
   name: "SearchForm",
   components: {
-    Item,
+    Item
   },
   data() {
     return {
       url: process.env.VUE_APP_URL,
       searchText: "",
-      btnFormTitle: "Отправить",
+      btnFormTitle: "Отправить"
     };
   },
   watch: {
-    $route: function () {
+    $route: function() {
       this.$store.commit("cleanItems");
       this.$store.commit("cleanProducts");
-    },
+    }
   },
   computed: {
     ...mapGetters({
-      items: "getItems",
-    }),
+      items: "getItems"
+    })
   },
   methods: {
     fetchBooks() {
       this.$store.dispatch("getItems", this.url + this.searchText);
       this.searchText = "";
-    },
-  },
+    }
+  }
 };
 </script>
 

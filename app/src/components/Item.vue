@@ -44,7 +44,7 @@
             <div
               class="form-group text-left"
               :class="{
-                'form-group--error': $v.modal.modalFormInput.name.$error,
+                'form-group--error': $v.modal.modalFormInput.name.$error
               }"
             >
               <label for="name" aria-label="Имя пользователя"
@@ -73,7 +73,7 @@
             <div
               class="form-group text-left"
               :class="{
-                'form-group--error': $v.modal.modalFormInput.email.$error,
+                'form-group--error': $v.modal.modalFormInput.email.$error
               }"
             >
               <label for="email" aria-label="Ваш адрес электронной почты"
@@ -101,7 +101,7 @@
             <div
               class="form-group text-left"
               :class="{
-                'form-group--error': $v.modal.modalFormInput.tel.$error,
+                'form-group--error': $v.modal.modalFormInput.tel.$error
               }"
             >
               <label for="phone-number" aria-label="Ваш телефон"
@@ -142,8 +142,7 @@
 
 <script>
 import { EventBus } from "../main";
-import { required, minLength } from "vuelidate/lib/validators";
-import { helpers } from "vuelidate/lib/validators";
+import { required, minLength, helpers } from "vuelidate/lib/validators";
 
 const checkValidityEmail = helpers.regex(
   "checkValidityEmail",
@@ -159,8 +158,8 @@ export default {
   name: "Item",
   props: {
     volume: {
-      type: Object,
-    },
+      type: Object
+    }
   },
   data() {
     return {
@@ -170,20 +169,20 @@ export default {
       notForSale: false,
       card: {
         imgAlt: "Изображение обложки тома",
-        btnTitle: "Заказать",
+        btnTitle: "Заказать"
       },
       modal: {
         btnTitle: "Отправить",
         modalFormInput: {
           name: null,
           tel: "+380",
-          email: null,
+          email: null
         },
         showModal: {
           popup: true,
-          popup_open: false,
-        },
-      },
+          popup_open: false
+        }
+      }
     };
   },
   validations: {
@@ -191,16 +190,16 @@ export default {
       modalFormInput: {
         name: {
           required,
-          minLength: minLength(2),
+          minLength: minLength(2)
         },
         email: {
-          checkValidityEmail,
+          checkValidityEmail
         },
         tel: {
-          checkValidityTel,
-        },
-      },
-    },
+          checkValidityTel
+        }
+      }
+    }
   },
   methods: {
     openModal() {
@@ -221,11 +220,11 @@ export default {
       EventBus.$emit("priceproduct", this.price);
       this.$store.commit("addProduct", this.volume);
       this.modal.showModal.popup_open = false;
-    },
+    }
   },
   mounted() {
     EventBus.$on("closeModal", () => (this.modal.showModal.popup_open = false));
-  },
+  }
 };
 </script>
 
