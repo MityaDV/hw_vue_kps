@@ -1,14 +1,15 @@
 <template>
-  <div></div>
+  <div>
+    <item-books></item-books>
+  </div>
 </template>
 
 <script>
+import ItemBooks from './../components/ItemBooks.vue';
 export default {
   name: 'HomePage',
-  data() {
-    return {}
+  components: {
+    ItemBooks,
   },
-
-  methods: {},
-}
+};
 </script>

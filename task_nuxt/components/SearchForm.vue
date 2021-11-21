@@ -1,7 +1,7 @@
 <template>
   <v-row justify="center" align="center">
     <v-col cols="12" lg="6">
-      <v-form class="d-flex justify-center flex-wrap" @submit.prevent="">
+      <v-form class="d-flex justify-center flex-wrap" @submit.prevent="addPath">
         <v-text-field
           v-model.trim="searchText"
           style="flex-basis: 100%"
@@ -11,7 +11,7 @@
           :clearable="clearable"
         >
         </v-text-field>
-        <v-btn depressed color="primary">
+        <v-btn depressed color="primary" type="submit">
           {{ btnTitle }}
         </v-btn>
       </v-form>
@@ -28,7 +28,13 @@ export default {
       btnTitle: 'Отправить',
       autofocus: true,
       clearable: true,
-    }
+    };
   },
-}
+  methods: {
+    addPath() {
+      this.$router.push(`/search_books/${this.searchText}`);
+      this.searchText = '';
+    },
+  },
+};
 </script>
