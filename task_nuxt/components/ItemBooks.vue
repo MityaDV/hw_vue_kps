@@ -19,7 +19,7 @@
         <span>
           {{ item.volumeInfo.publishedDate }}
         </span>
-        <button class="btn btn-primary" @click.prevent="openModal(item)">
+        <button class="btn btn-primary" @click="openModal">
           {{ card.btnTitle }}
         </button>
       </li>
@@ -30,7 +30,7 @@
 </template>
 
 <script>
-// import { EventBus } from '../main';
+import { EventBus } from '../plugins/EventBus';
 
 export default {
   name: 'Item',
@@ -40,6 +40,7 @@ export default {
       isActive: false,
       product: {},
       price: 0,
+      notForSale: false,
 
       card: {
         imgAlt: 'Изображение обложки тома',
@@ -54,30 +55,33 @@ export default {
     },
   },
   methods: {
-    openModal(item) {
-      if (item.saleInfo.saleability === 'FOR_SALE') {
-        if (this.modal.showModal.popup) {
-          this.modal.showModal.popup_open = true;
-          // EventBus.$emit('clickModalButton');
-          this.$nextTick(() => {
-            this.$refs.name.focus();
-          });
-        }
-      } else if (item.saleInfo.saleability === 'NOT_FOR_SALE') {
-        this.notForSale = true;
-      }
+    openModal() {
+      EventBus.$emit('clickModalButton');
     },
-    addProduct() {
-      this.price = this.item.saleInfo.listPrice.amount;
-      // EventBus.$emit('priceproduct', this.price);
-      this.$store.commit('addProduct', this.item);
-      this.modal.showModal.popup_open = false;
-    },
+    // openModal(item) {
+    //   if (item.saleInfo.saleability === 'FOR_SALE') {
+    //     if (this.modal.showModal.popup) {
+    //       this.modal.showModal.popup_open = true;
+    //       EventBus.$emit('clickModalButton');
+    //       this.$nextTick(() => {
+    //         this.$refs.name.focus();
+    //       });
+    //     }
+    //   } else if (item.saleInfo.saleability === 'NOT_FOR_SALE') {
+    //     this.notForSale = true;
+    //   }
+    // },
+    // addProduct() {
+    //   this.price = this.item.saleInfo.listPrice.amount;
+    //   // EventBus.$emit('priceproduct', this.price);
+    //   this.$store.commit('addProduct', this.item);
+    //   this.modal.showModal.popup_open = false;
+    // },
   },
 
-  // mounted() {
-  //   EventBus.$on('closeModal', () => (this.modal.showModal.popup_open = false));
-  // },
+  mounted() {
+    // EventBus.$on('closeModal', () => (this.showModal.popup_open = false));
+  },
 };
 </script>
 
@@ -125,45 +129,6 @@ $color_not_for_sale: rgba(238, 238, 238, 0.7);
     color: $color_error;
     transform: rotate(15deg);
   }
-}
-
-.popup {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  z-index: 100;
-
-  display: none;
-  padding: 15px;
-  outline: 1px solid $color_blue_sky;
-  background-color: rgb(250, 250, 250);
-  box-shadow: 0 10px 20px rgba(4, 6, 6, 0.2);
-  transform: translateX(-50%) translateY(-50%);
-
-  @keyframes departure {
-    0% {
-      transform: translateX(-200%) translateY(-50%);
-    }
-
-    70% {
-      transform: translateX(-30%) translateY(-50%);
-    }
-
-    90% {
-      transform: translateX(-70%) translateY(-50%);
-    }
-
-    100% {
-      transform: translateX(-50%) translateY(-50%);
-    }
-  }
-}
-.popup_open {
-  display: block;
-  transition: ease-out;
-  animation-name: departure;
-  animation-duration: 0.7s;
-  will-change: transform;
 }
 
 .error {

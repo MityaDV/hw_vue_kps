@@ -1,12 +1,12 @@
 <template>
-  <div class="modal__overlay" :class="showModal">
-    <div class="row">
-      <div class="col-md-4">
-        <img :src="item.volumeInfo.imageLinks.thumbnail" :alt="card.imgAlt" />
+  <div :class="showModal">
+    <div class="modal">
+      <div>
+        <img :src="src" :alt="alt" />
       </div>
       <div class="col-md-8">
         <p class="text-primary small text-left">
-          {{ item.volumeInfo.description }}
+          {{ text }}
         </p>
         <form>
           <div
@@ -100,6 +100,7 @@
 
 <script>
 import { required, minLength, helpers } from 'vuelidate/lib/validators';
+import { EventBus } from './../plugins/EventBus';
 
 const checkValidityEmail = helpers.regex(
   'checkValidityEmail',
@@ -116,36 +117,103 @@ export default {
 
   data() {
     return {
-      notForSale: false,
       btnTitle: 'Отправить',
+      text: 'description',
+      src: 'url',
+      alt: 'alt text',
+      showModal: false,
       modalFormInput: {
-        name: null,
+        name: '',
         tel: '+380',
-        email: null,
+        email: '',
       },
       showModal: {
-        popup: true,
-        popup_open: false,
+        modal__overlay: true,
+        modal__overlay_open: false,
       },
     };
   },
   validations: {
-    modal: {
-      modalFormInput: {
-        name: {
-          required,
-          minLength: minLength(2),
-        },
-        email: {
-          checkValidityEmail,
-        },
-        tel: {
-          checkValidityTel,
-        },
+    modalFormInput: {
+      name: {
+        required,
+        minLength: minLength(2),
+      },
+      email: {
+        checkValidityEmail,
+      },
+      tel: {
+        checkValidityTel,
       },
     },
+  },
+  methods: {
+    openModal() {
+      if (this.showModal.modal__overlay) {
+        this.showModal.modal__overlay_open = true;
+        this.$nextTick(() => {
+          this.$refs.name.focus();
+        });
+      }
+    },
+  },
+  mounted() {
+    EventBus.$on('clickModalButton', () => this.openModal());
   },
 };
 </script>
 
-<style scoped></style>
+<style scoped lang="scss">
+$color_blue_sky: #00b2ff;
+$color_white_90: rgba(255, 255, 255, 0.9);
+$color_white: rgb(255, 255, 255);
+$color_shadow: rgba(4, 6, 6, 0.2);
+
+.modal__overlay {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 100;
+  display: none;
+  justify-content: center;
+  background: $color_white_90;
+}
+
+.modal__overlay_open {
+  display: flex;
+  transition: ease-out;
+  animation-name: departure;
+  animation-duration: 0.7s;
+  will-change: transform;
+}
+
+.modal {
+  top: 50%;
+  left: 50%;
+  padding: 15px;
+  outline: 1px solid $color_blue_sky;
+  background-color: $color_white;
+  box-shadow: 0 10px 20px $color_shadow;
+  transform: translateX(-50%) translateY(-50%);
+
+  @keyframes departure {
+    0% {
+      transform: translateX(-200%) translateY(-50%);
+    }
+
+    70% {
+      transform: translateX(-30%) translateY(-50%);
+    }
+
+    90% {
+      transform: translateX(-70%) translateY(-50%);
+    }
+
+    100% {
+      transform: translateX(-50%) translateY(-50%);
+    }
+  }
+}
+</style>
