@@ -1,10 +1,10 @@
 <template>
-  <div :class="showModal">
+  <div class="modal__overlay">
     <div class="modal">
       <div>
         <img :src="src" :alt="alt" />
       </div>
-      <div class="col-md-8">
+      <div>
         <p class="text-primary small text-left">
           {{ text }}
         </p>
@@ -121,15 +121,10 @@ export default {
       text: 'description',
       src: 'url',
       alt: 'alt text',
-      showModal: false,
       modalFormInput: {
         name: '',
         tel: '+380',
         email: '',
-      },
-      showModal: {
-        modal__overlay: true,
-        modal__overlay_open: false,
       },
     };
   },
@@ -148,18 +143,11 @@ export default {
     },
   },
   methods: {
-    openModal() {
-      if (this.showModal.modal__overlay) {
-        this.showModal.modal__overlay_open = true;
-        this.$nextTick(() => {
-          this.$refs.name.focus();
-        });
-      }
+    addProduct() {
+      EventBus.$emit('closeModal');
     },
   },
-  mounted() {
-    EventBus.$on('clickModalButton', () => this.openModal());
-  },
+  mounted() {},
 };
 </script>
 
@@ -175,27 +163,24 @@ $color_shadow: rgba(4, 6, 6, 0.2);
   right: 0;
   bottom: 0;
   left: 0;
-  z-index: 100;
-  display: none;
+  // z-index: 100;
+  display: flex;
   justify-content: center;
   background: $color_white_90;
 }
 
-.modal__overlay_open {
-  display: flex;
-  transition: ease-out;
-  animation-name: departure;
-  animation-duration: 0.7s;
-  will-change: transform;
-}
-
 .modal {
+  position: fixed;
   top: 50%;
   left: 50%;
   padding: 15px;
   outline: 1px solid $color_blue_sky;
   background-color: $color_white;
   box-shadow: 0 10px 20px $color_shadow;
+  transition: ease-out;
+  animation-name: departure;
+  animation-duration: 0.7s;
+  will-change: transform;
   transform: translateX(-50%) translateY(-50%);
 
   @keyframes departure {

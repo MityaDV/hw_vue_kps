@@ -19,7 +19,7 @@
         <span>
           {{ item.volumeInfo.publishedDate }}
         </span>
-        <button class="btn btn-primary" @click="openModal">
+        <button @click="openModal">
           {{ card.btnTitle }}
         </button>
       </li>
@@ -56,7 +56,10 @@ export default {
   },
   methods: {
     openModal() {
-      EventBus.$emit('clickModalButton');
+      EventBus.$emit('openModal');
+      // this.$nextTick(() => {
+      //   this.$refs.name.focus();
+      // });
     },
     // openModal(item) {
     //   if (item.saleInfo.saleability === 'FOR_SALE') {
