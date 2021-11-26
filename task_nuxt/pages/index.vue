@@ -1,6 +1,6 @@
 <template>
   <div>
-    <item-books></item-books>
+    <item-book></item-book>
     <!-- <div>
       <v-btn @click="showModal = true"></v-btn>
     </div> -->
@@ -10,13 +10,13 @@
 
 <script>
 // import Modal from './../components/Modal.vue';
-import ItemBooks from './../components/ItemBooks.vue';
+import ItemBook from '../components/ItemBook.vue';
 // import { EventBus } from './../plugins/EventBus';
 
 export default {
   name: 'HomePage',
   components: {
-    ItemBooks,
+    ItemBook,
     // Modal,
   },
   data() {

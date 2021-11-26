@@ -6,7 +6,7 @@
       <v-spacer />
     </v-app-bar>
     <v-main>
-      <v-container>
+      <v-container fluid>
         <cart />
         <search-form />
         <Nuxt />
@@ -19,8 +19,8 @@
 </template>
 
 <script>
-import SearchForm from './../components/SearchForm'
-import Cart from './../components/Cart'
+import SearchForm from './../components/SearchForm';
+import Cart from './../components/Cart';
 export default {
   name: 'Default',
   components: {
@@ -32,7 +32,7 @@ export default {
       fixed: true,
       light: true,
       title: 'Google Search Books',
-    }
+    };
   },
-}
+};
 </script>
