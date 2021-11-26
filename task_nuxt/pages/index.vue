@@ -1,23 +1,22 @@
 <template>
-  <div>
-    <item-book></item-book>
-    <!-- <div>
-      <v-btn @click="showModal = true"></v-btn>
-    </div> -->
-    <!-- <modal></modal> -->
-  </div>
+  <section>
+    <cart></cart>
+    <search-form></search-form>
+    <!-- <item-book></item-book> -->
+  </section>
 </template>
 
 <script>
-// import Modal from './../components/Modal.vue';
-import ItemBook from '../components/ItemBook.vue';
-// import { EventBus } from './../plugins/EventBus';
+// import ItemBook from '../components/ItemBook.vue';
+import Cart from './../components/Cart.vue';
+import SearchForm from './../components/SearchForm.vue';
 
 export default {
   name: 'HomePage',
   components: {
-    ItemBook,
-    // Modal,
+    SearchForm,
+    Cart,
+    // ItemBook,
   },
   data() {
     return {};

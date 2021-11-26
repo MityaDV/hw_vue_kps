@@ -1,39 +1,49 @@
 <template>
-  <div class="item">
-    <ul class="list-group list">
-      <li v-for="item in items" :key="item.id" class="list-group-item">
-        <img
-          v-if="item.volumeInfo.imageLinks"
-          :alt="card.imgAlt"
-          :src="item.volumeInfo.imageLinks.thumbnail"
-        />
-        <img v-else :alt="card.imgAlt" src="./../assets/placeholder_book.svg" />
-        <h4 class="text-primary">{{ item.volumeInfo.title }}</h4>
-        <div class="list-group-item item_autor">
-          <span
-            v-for="(autor, index) in item.volumeInfo.authors"
-            :key="index"
-            >{{ autor }}</span
-          >
+  <v-row>
+    <v-col v-for="item in items" :key="item.id" cols="12">
+      <v-card class="pa-2">
+        <div class="d-flex flex-no-wrap">
+          <v-avatar tile height="181" min-width="128">
+            <v-img
+              v-if="item.volumeInfo.imageLinks"
+              :alt="card.imgAlt"
+              :src="item.volumeInfo.imageLinks.thumbnail"
+            />
+            <v-img
+              v-else
+              :alt="card.imgAlt"
+              src="./../assets/placeholder_book.svg"
+            />
+          </v-avatar>
+          <div class="d-flex flex-column justify-center">
+            <h4 class="text-h5">{{ item.volumeInfo.title }}</h4>
+            <div>
+              <span
+                v-for="(autor, index) in item.volumeInfo.authors"
+                :key="index"
+                >{{ autor }}</span
+              >
+            </div>
+            <span>
+              {{ item.volumeInfo.publishedDate }}
+            </span>
+          </div>
         </div>
-        <span>
-          {{ item.volumeInfo.publishedDate }}
-        </span>
-        <button @click="openModal">
+        <v-btn depressed color="primary" @click="openModal">
           {{ card.btnTitle }}
-        </button>
-      </li>
-    </ul>
+        </v-btn>
+      </v-card>
+    </v-col>
 
     <div v-if="notForSale" class="not_for_sale"></div>
-  </div>
+  </v-row>
 </template>
 
 <script>
 import { EventBus } from '../plugins/EventBus';
 
 export default {
-  name: 'Item',
+  name: 'ItemBook',
 
   data() {
     return {
@@ -82,9 +92,9 @@ export default {
     // },
   },
 
-  mounted() {
-    // EventBus.$on('closeModal', () => (this.showModal.popup_open = false));
-  },
+  // mounted() {
+  // EventBus.$on('closeModal', () => (this.showModal.popup_open = false));
+  // },
 };
 </script>
 
@@ -93,18 +103,18 @@ $color_blue_sky: #00b2ff;
 $color_error: #f04124;
 $color_not_for_sale: rgba(238, 238, 238, 0.7);
 
-.item {
-  display: flex;
-  flex-direction: column;
-  position: relative;
-  min-width: 300px;
-  max-width: 300px;
-  margin: 0 auto 15px;
-}
+// .item {
+//   display: flex;
+//   // flex-direction: column;
+//   // position: relative;
+//   min-width: 300px;
+//   max-width: 300px;
+//   margin: 0 auto;
+// }
 
-.list {
-  margin-bottom: 0;
-}
+// .list {
+//   margin-bottom: 0;
+// }
 
 .not_for_sale {
   position: absolute;
@@ -139,9 +149,9 @@ $color_not_for_sale: rgba(238, 238, 238, 0.7);
   position: absolute;
 }
 
-.form-group {
-  position: relative;
-}
+// .form-group {
+//   position: relative;
+// }
 
 .item_autor {
   display: flex;

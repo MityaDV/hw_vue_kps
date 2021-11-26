@@ -32,7 +32,7 @@ export default {
   },
   methods: {
     addPath() {
-      this.$router.push(`/search_books/${this.searchText}`);
+      this.$router.push(`/search/${this.searchText}`);
       this.searchText = '';
     },
   },
