@@ -147,7 +147,7 @@ export default {
       EventBus.$emit('closeModal');
     },
   },
-  mounted() {},
+  // mounted() {},
 };
 </script>
 
@@ -163,7 +163,7 @@ $color_shadow: rgba(4, 6, 6, 0.2);
   right: 0;
   bottom: 0;
   left: 0;
-  // z-index: 100;
+  z-index: 100;
   display: flex;
   justify-content: center;
   background: $color_white_90;

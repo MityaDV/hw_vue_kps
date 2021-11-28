@@ -1,11 +1,9 @@
 <template>
-  <v-row justify="center">
-    <v-col justify="center" align="center" cols="12" md="8">
-      <h2>Found Books</h2>
-      <item-book></item-book>
-      <modal v-show="showModal"></modal>
-    </v-col>
-  </v-row>
+  <div class="d-flex flex-column align-center">
+    <h3 class="text-h3 mb-4">Found Books</h3>
+    <item-book></item-book>
+    <modal v-show="showModal"></modal>
+  </div>
 </template>
 
 <script>
