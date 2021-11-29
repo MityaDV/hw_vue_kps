@@ -41,7 +41,7 @@
               "
               >Author is unknown</span
             >
-            <div v-else class="d-flex flex-column">
+            <template v-else class="d-flex flex-column">
               <span
                 v-for="(autor, index) in item.volumeInfo.authors"
                 :key="index"
@@ -52,7 +52,7 @@
                 "
                 >{{ autor }}</span
               >
-            </div>
+            </template>
             <span
               v-if="item.volumeInfo.publishedDate"
               class="text-caption light-blue--text"
