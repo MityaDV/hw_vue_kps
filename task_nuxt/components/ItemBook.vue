@@ -216,19 +216,6 @@ $color_blue_sky: #00b2ff;
 $color_error: #f04124;
 $color_not_for_sale: rgba(238, 238, 238, 0.7);
 
-// .item {
-//   display: flex;
-//   // flex-direction: column;
-//   // position: relative;
-//   min-width: 300px;
-//   max-width: 300px;
-//   margin: 0 auto;
-// }
-
-// .list {
-//   margin-bottom: 0;
-// }
-
 .not_for_sale {
   &::before {
     content: '';
@@ -237,13 +224,13 @@ $color_not_for_sale: rgba(238, 238, 238, 0.7);
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: 50;
+    z-index: 3;
     background-color: $color_not_for_sale;
   }
   &::after {
     content: 'NOT FOR SALE';
     position: absolute;
-    z-index: 51;
+    z-index: 4;
     top: 7%;
     right: 3%;
     padding: 15px 0 0;
@@ -265,10 +252,6 @@ $color_not_for_sale: rgba(238, 238, 238, 0.7);
   color: $color_error;
   position: absolute;
 }
-
-// .form-group {
-//   position: relative;
-// }
 
 .item_autor {
   display: flex;

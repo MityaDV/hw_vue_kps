@@ -142,12 +142,18 @@ export default {
       },
     },
   },
+  mounted() {
+    document.addEventListener('keyup', (e) => {
+      if (e.keyCode === 27) {
+        EventBus.$emit('closeModal');
+      }
+    });
+  },
   methods: {
     addProduct() {
-      EventBus.$emit('closeModal');
+      EventBus.$emit('addProduct');
     },
   },
-  // mounted() {},
 };
 </script>
 
