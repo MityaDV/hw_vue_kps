@@ -2,11 +2,11 @@
   <div class="modal__overlay">
     <div class="modal">
       <div>
-        <img :src="src" :alt="alt" />
+        <img :src="item.src" :alt="alt" />
       </div>
       <div>
         <p class="text-primary small text-left">
-          {{ text }}
+          {{ item.description }}
         </p>
         <form>
           <div
@@ -118,9 +118,13 @@ export default {
   data() {
     return {
       btnTitle: 'Отправить',
-      text: 'description',
+      // text: 'description',
       src: 'url',
-      alt: 'alt text',
+      alt: 'Изображение обложки тома',
+      item: {
+        src: '',
+        description: '',
+      },
       modalFormInput: {
         name: '',
         tel: '+380',
@@ -147,6 +151,10 @@ export default {
       if (e.keyCode === 27) {
         EventBus.$emit('closeModal');
       }
+    });
+    EventBus.$on('openModal', (item) => {
+      this.item.src = item.volumeInfo.imageLinks.thumbnail;
+      this.item.description = item.volumeInfo.description;
     });
   },
   methods: {

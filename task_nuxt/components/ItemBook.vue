@@ -136,7 +136,7 @@
               color="primary lighten-1"
               elevation="3"
               class="align-self-center"
-              @click="openModal"
+              @click="openModal(item)"
             >
               {{ card.btnTitle }}
             </v-btn>
@@ -178,8 +178,8 @@ export default {
     },
   },
   methods: {
-    openModal() {
-      EventBus.$emit('openModal');
+    openModal(item) {
+      EventBus.$emit('openModal', item);
       // this.$nextTick(() => {
       //   this.$refs.name.focus();
       // });
