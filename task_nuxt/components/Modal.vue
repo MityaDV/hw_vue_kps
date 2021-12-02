@@ -1,14 +1,16 @@
 <template>
-  <div class="modal__overlay">
-    <div class="modal">
-      <div>
-        <img :src="item.src" :alt="alt" />
-      </div>
-      <div>
-        <p class="text-primary small text-left">
+  <v-container fluid class="modal__overlay">
+    <v-card class="modal d-flex flex-wrap overflow-y-auto" max-height="450">
+      <v-row class="flex-nowrap justify-center d-block d-sm-flex">
+        <v-avatar tile height="153" min-width="100">
+          <v-img :src="item.src" :alt="alt" />
+        </v-avatar>
+        <v-card-text class="text-caption">
           {{ item.description }}
-        </p>
-        <form>
+        </v-card-text>
+      </v-row>
+      <v-row class="justify-center">
+        <v-form>
           <div
             class="form-group text-left"
             :class="{
@@ -34,7 +36,6 @@
               <template v-else> Поле обязательно для заполнения </template>
             </div>
           </div>
-
           <div
             class="form-group text-left"
             :class="{
@@ -44,7 +45,6 @@
             <label for="email" aria-label="Ваш адрес электронной почты"
               >Email:</label
             >
-
             <input
               id="email"
               v-model.trim="$v.modalFormInput.email.$model"
@@ -59,7 +59,6 @@
               </template>
             </div>
           </div>
-
           <div
             class="form-group text-left"
             :class="{
@@ -69,7 +68,6 @@
             <label for="phone-number" aria-label="Ваш телефон"
               >Phone number:</label
             >
-
             <input
               id="phone-number"
               v-model.trim="$v.modalFormInput.tel.$model"
@@ -83,7 +81,6 @@
               </template>
             </div>
           </div>
-
           <button
             type="submit"
             class="btn btn-info"
@@ -92,10 +89,10 @@
           >
             {{ btnTitle }}
           </button>
-        </form>
-      </div>
-    </div>
-  </div>
+        </v-form>
+      </v-row>
+    </v-card>
+  </v-container>
 </template>
 
 <script>
