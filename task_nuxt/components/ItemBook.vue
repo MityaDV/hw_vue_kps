@@ -180,6 +180,7 @@ export default {
   methods: {
     openModal(item) {
       EventBus.$emit('openModal', item);
+
       // this.$nextTick(() => {
       //   this.$refs.name.focus();
       // });

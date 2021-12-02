@@ -1,94 +1,57 @@
 <template>
   <v-container fluid class="modal__overlay">
-    <v-card class="modal d-flex flex-wrap overflow-y-auto" max-height="450">
-      <v-row class="flex-nowrap justify-center d-block d-sm-flex">
-        <v-avatar tile height="153" min-width="100">
+    <v-card class="modal d-flex flex-wrap">
+      <v-row class="flex-nowrap justify-center d-block d-sm-flex" no-gutters>
+        <v-avatar tile height="153" min-width="100" class="mr-4">
           <v-img :src="item.src" :alt="alt" />
         </v-avatar>
-        <v-card-text class="text-caption">
+        <v-card-text
+          class="text-caption overflow-y-hidden pa-0"
+          style="max-height: 200px"
+        >
           {{ item.description }}
         </v-card-text>
       </v-row>
-      <v-row class="justify-center">
+      <v-row class="justify-center" no-gutters>
         <v-form>
-          <div
-            class="form-group text-left"
-            :class="{
-              'form-group--error': $v.modalFormInput.name.$error,
-            }"
+          <v-text-field
+            v-model.trim="form.name"
+            :error-messages="nameErrors"
+            label="Name"
+            required
+            @input="$v.form.name.$touch()"
+            @blur="$v.form.name.$touch()"
           >
-            <label for="name" aria-label="Имя пользователя"
-              >Имя пользователя:</label
-            >
-            <input
-              id="name"
-              ref="name"
-              v-model.trim="$v.modalFormInput.name.$model"
-              class="form-control"
-              type="text"
-              name="name"
-              placeholder="Введите ваше имя"
-            />
-            <div v-if="$v.modalFormInput.name.$error" class="small error">
-              <template v-if="!$v.modalFormInput.name.minLength">
-                Имя должно содержать минимум 2 символа
-              </template>
-              <template v-else> Поле обязательно для заполнения </template>
-            </div>
-          </div>
-          <div
-            class="form-group text-left"
-            :class="{
-              'form-group--error': $v.modalFormInput.email.$error,
-            }"
+          </v-text-field>
+          <v-text-field
+            v-model.trim="form.email"
+            :error-messages="emailErrors"
+            label="Email"
+            required
+            @input="$v.form.email.$touch()"
+            @blur="$v.form.email.$touch()"
           >
-            <label for="email" aria-label="Ваш адрес электронной почты"
-              >Email:</label
-            >
-            <input
-              id="email"
-              v-model.trim="$v.modalFormInput.email.$model"
-              class="form-control"
-              type="email"
-              name="email"
-              placeholder="someone@example.com"
-            />
-            <div v-if="$v.modalFormInput.email.$error" class="small error">
-              <template v-if="!$v.modalFormInput.email.validEmail">
-                Введите корректный адрес электронной почты
-              </template>
-            </div>
-          </div>
-          <div
-            class="form-group text-left"
-            :class="{
-              'form-group--error': $v.modalFormInput.tel.$error,
-            }"
+          </v-text-field>
+          <v-text-field
+            v-model.trim="form.tel"
+            :error-messages="phoneErrors"
+            label="Phone number"
+            required
+            @input="$v.form.tel.$touch()"
+            @blur="$v.form.tel.$touch()"
           >
-            <label for="phone-number" aria-label="Ваш телефон"
-              >Phone number:</label
-            >
-            <input
-              id="phone-number"
-              v-model.trim="$v.modalFormInput.tel.$model"
-              class="form-control"
-              type="tel"
-              name="phone-number"
-            />
-            <div v-if="$v.modalFormInput.tel.$error" class="small error">
-              <template v-if="!$v.modalFormInput.tel.validEmail">
-                Введите номер в формате +380ххххххххх
-              </template>
-            </div>
-          </div>
-          <button
+          </v-text-field>
+
+          <v-btn
+            depressed
+            color="primary"
             type="submit"
-            class="btn btn-info"
             :disabled="$v.$invalid"
             @click.prevent="addProduct"
           >
             {{ btnTitle }}
-          </button>
+          </v-btn>
+          <v-btn depressed color="primary" @click="clear"> Очистить </v-btn>
         </v-form>
       </v-row>
     </v-card>
@@ -96,13 +59,8 @@
 </template>
 
 <script>
-import { required, minLength, helpers } from 'vuelidate/lib/validators';
+import { required, minLength, helpers, email } from 'vuelidate/lib/validators';
 import { EventBus } from './../plugins/EventBus';
-
-const checkValidityEmail = helpers.regex(
-  'checkValidityEmail',
-  /^([A-Za-z0-9_\-.])+@([A-Za-z0-9_\-.])+\.([A-Za-z]{2,4})$/i
-);
 
 const checkValidityTel = helpers.regex(
   'checkValidityTel',
@@ -115,32 +73,61 @@ export default {
   data() {
     return {
       btnTitle: 'Отправить',
-      // text: 'description',
-      src: 'url',
       alt: 'Изображение обложки тома',
       item: {
         src: '',
         description: '',
       },
-      modalFormInput: {
+      form: {
         name: '',
-        tel: '+380',
         email: '',
+        tel: '+380',
       },
     };
   },
   validations: {
-    modalFormInput: {
+    form: {
       name: {
         required,
         minLength: minLength(2),
       },
       email: {
-        checkValidityEmail,
+        required,
+        email,
       },
       tel: {
+        required,
         checkValidityTel,
       },
+    },
+  },
+  computed: {
+    nameErrors() {
+      const errors = [];
+      if (!this.$v.form.name.$dirty) return errors;
+      !this.$v.form.name.minLength &&
+        errors.push('Имя должно содержать минимум 2 символа');
+      !this.$v.form.name.required &&
+        errors.push('Поле обязательно для заполнения');
+      return errors;
+    },
+    emailErrors() {
+      const errors = [];
+      if (!this.$v.form.email.$dirty) return errors;
+      !this.$v.form.email.email &&
+        errors.push('Введите корректный адрес электронной почты');
+      !this.$v.form.email.required &&
+        errors.push('Поле обязательно для заполнения');
+      return errors;
+    },
+    phoneErrors() {
+      const errors = [];
+      if (!this.$v.form.tel.$dirty) return errors;
+      !this.$v.form.tel.checkValidityTel &&
+        errors.push('Введите номер в формате +380ххххххххх');
+      !this.$v.form.tel.required &&
+        errors.push('Поле обязательно для заполнения');
+      return errors;
     },
   },
   mounted() {
@@ -156,7 +143,17 @@ export default {
   },
   methods: {
     addProduct() {
+      this.$v.$touch();
       EventBus.$emit('addProduct');
+    },
+    clear() {
+      this.$v.form.$reset();
+      this.form.name = '';
+      this.form.email = '';
+      this.form.tel = '+380';
+    },
+    closeModal() {
+      EventBus.$emit('closeModal');
     },
   },
 };
