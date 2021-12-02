@@ -92,7 +92,9 @@
                 class="small error"
                 v-if="$v.modal.modalFormInput.email.$error"
               >
-                <template v-if="!$v.modal.modalFormInput.email.validEmail">
+                <template
+                  v-if="!$v.modal.modalFormInput.email.checkValidityEmail"
+                >
                   Введите корректный адрес электронной почты
                 </template>
               </div>
@@ -119,7 +121,7 @@
                 class="small error"
                 v-if="$v.modal.modalFormInput.tel.$error"
               >
-                <template v-if="!$v.modal.modalFormInput.tel.validEmail">
+                <template v-if="!$v.modal.modalFormInput.tel.checkValidityTel">
                   Введите номер в формате +380ххххххххх
                 </template>
               </div>
