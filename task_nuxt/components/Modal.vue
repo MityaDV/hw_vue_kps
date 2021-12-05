@@ -1,6 +1,17 @@
 <template>
   <v-container fluid class="modal__overlay">
     <v-card class="modal d-flex flex-wrap">
+      <v-btn
+        fab
+        absolute
+        small
+        top
+        color="primary"
+        style="right: -20px"
+        @click="closeModal"
+      >
+        <v-icon small>mdi-close-thick</v-icon>
+      </v-btn>
       <v-row class="flex-nowrap justify-center d-block d-sm-flex" no-gutters>
         <v-avatar tile height="153" min-width="100" class="mr-4">
           <v-img :src="item.src" :alt="alt" />
@@ -77,6 +88,7 @@ export default {
       item: {
         src: '',
         description: '',
+        product: {},
       },
       form: {
         name: '',
@@ -137,6 +149,7 @@ export default {
       }
     });
     EventBus.$on('openModal', (item) => {
+      this.item.product = item;
       this.item.src = item.volumeInfo.imageLinks.thumbnail;
       this.item.description = item.volumeInfo.description;
     });
@@ -144,7 +157,10 @@ export default {
   methods: {
     addProduct() {
       this.$v.$touch();
-      EventBus.$emit('addProduct');
+      // EventBus.$emit('addProduct');
+      this.$store.commit('addProduct', this.item.product);
+      this.clear();
+      this.closeModal();
     },
     clear() {
       this.$v.form.$reset();

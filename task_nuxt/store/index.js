@@ -11,6 +11,9 @@ export const getters = {
   getProducts(state) {
     return state.products;
   },
+  getProductsCount(state) {
+    return state.products.length;
+  },
 };
 
 export const mutations = {
