@@ -2,19 +2,8 @@ export const state = () => ({
   items: [],
   products: [],
   searchText: '',
+  total: 0,
 });
-
-export const getters = {
-  getItems(state) {
-    return state.items;
-  },
-  getProducts(state) {
-    return state.products;
-  },
-  getProductsCount(state) {
-    return state.products.length;
-  },
-};
 
 export const mutations = {
   addSearchText(state, searchText) {
@@ -28,6 +17,7 @@ export const mutations = {
   },
   addProduct(state, product) {
     state.products.push(product);
+    state.total += +product.saleInfo.listPrice.amount.toFixed(2);
   },
   cleanProducts(state) {
     state.products = [];
@@ -43,5 +33,20 @@ export const actions = {
       process.env.BASE_APP_URL + state.searchText
     );
     commit('addItems', data);
+  },
+};
+
+export const getters = {
+  getItems(state) {
+    return state.items;
+  },
+  getProducts(state) {
+    return state.products;
+  },
+  getProductsCount(state) {
+    return state.products.length;
+  },
+  getTotal(state) {
+    return state.total;
   },
 };
