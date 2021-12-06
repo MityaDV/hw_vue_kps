@@ -29,7 +29,6 @@ export default {
   mounted() {
     EventBus.$on('openModal', () => (this.showModal = true));
     EventBus.$on('closeModal', () => (this.showModal = false));
-    // EventBus.$on('addProduct', () => (this.showModal = false));
   },
 };
 </script>

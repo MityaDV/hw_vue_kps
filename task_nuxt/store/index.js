@@ -3,6 +3,7 @@ export const state = () => ({
   products: [],
   searchText: '',
   total: 0,
+  onePrice: 0,
 });
 
 export const mutations = {
@@ -18,6 +19,7 @@ export const mutations = {
   addProduct(state, product) {
     state.products.push(product);
     state.total += +product.saleInfo.listPrice.amount.toFixed(2);
+    state.onePrice = +product.saleInfo.listPrice.amount.toFixed(2);
   },
   cleanProducts(state) {
     state.products = [];
@@ -48,5 +50,8 @@ export const getters = {
   },
   getTotal(state) {
     return state.total;
+  },
+  getOnePrice(state) {
+    return state.onePrice;
   },
 };

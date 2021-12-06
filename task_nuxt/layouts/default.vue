@@ -7,6 +7,7 @@
     </v-app-bar>
     <v-main>
       <v-container fluid>
+        <info-cart></info-cart>
         <Nuxt />
       </v-container>
     </v-main>
@@ -17,8 +18,12 @@
 </template>
 
 <script>
+import InfoCart from '../components/InfoCart.vue';
 export default {
   name: 'Default',
+  components: {
+    InfoCart,
+  },
 
   data() {
     return {

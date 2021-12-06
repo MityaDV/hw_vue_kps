@@ -11,8 +11,14 @@
         <v-card-text v-if="productCount < 1">
           {{ textOrder }}
         </v-card-text>
+        <v-card-text v-else-if="productCount == 1">
+          В корзине {{ productCount }} товар на сумму {{ totalPrice }} грн.
+        </v-card-text>
+        <v-card-text v-else-if="productCount > 1 && productCount < 5">
+          В корзине {{ productCount }} товара на сумму {{ totalPrice }} грн.
+        </v-card-text>
         <v-card-text v-else>
-          В корзине {{ productCount }} товар(ов) на сумму {{ totalPrice }} грн.
+          В корзине {{ productCount }} товаров на сумму {{ totalPrice }} грн.
         </v-card-text>
       </v-card>
     </v-col>
