@@ -47,20 +47,35 @@
       <span class="px-2 light-blue--text">
         Сума к оплате: {{ total }} грн.
       </span>
-      <v-btn depressed color="primary" nuxt to="/" @click="closeCart"
-        >Заказать</v-btn
-      >
+      <v-dialog v-model="dialog" max-width="400">
+        <template #activator="{ on, attrs }">
+          <v-btn
+            depressed
+            color="primary"
+            :atrrs="attrs"
+            v-on="on"
+            @click="cleanData"
+            >Заказать</v-btn
+          >
+        </template>
+        <v-card>
+          <v-card-text>
+            Ваш заказ на сумму {{ total }} грн. успешно выполнен!
+          </v-card-text>
+        </v-card>
+      </v-dialog>
     </v-col>
   </v-row>
 </template>
 
 <script>
-import { EventBus } from './../plugins/EventBus';
+// import { EventBus } from './../plugins/EventBus';
 export default {
   name: 'Cart',
   data() {
     return {
       alt: 'Изображение обложки тома',
+      dialog: false,
     };
   },
   computed: {
@@ -75,8 +90,11 @@ export default {
     },
   },
   methods: {
-    closeCart() {
-      EventBus.$emit('closeCart');
+    cleanData() {
+      setTimeout(() => {
+        this.dialog = false;
+        this.$router.push('/');
+      }, 5000);
     },
   },
 };
