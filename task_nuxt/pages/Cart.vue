@@ -38,7 +38,7 @@
               light-blue--text
             "
           >
-            {{ price }} грн.</span
+            {{ prod.saleInfo.listPrice.amount }} грн.</span
           >
         </div>
       </v-card>
@@ -69,7 +69,6 @@
 </template>
 
 <script>
-// import { EventBus } from './../plugins/EventBus';
 export default {
   name: 'Cart',
   data() {
@@ -85,13 +84,11 @@ export default {
     total() {
       return this.$store.getters.getTotal;
     },
-    price() {
-      return this.$store.getters.getOnePrice;
-    },
   },
   methods: {
     cleanData() {
       setTimeout(() => {
+        this.$store.commit('cleanState');
         this.dialog = false;
         this.$router.push('/');
       }, 5000);

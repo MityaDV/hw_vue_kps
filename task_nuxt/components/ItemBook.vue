@@ -180,35 +180,8 @@ export default {
   methods: {
     openModal(item) {
       EventBus.$emit('openModal', item);
-
-      // this.$nextTick(() => {
-      //   this.$refs.name.focus();
-      // });
     },
-    // openModal(item) {
-    //   if (item.saleInfo.saleability === 'FOR_SALE') {
-    //     if (this.modal.showModal.popup) {
-    //       this.modal.showModal.popup_open = true;
-    //       EventBus.$emit('clickModalButton');
-    //       this.$nextTick(() => {
-    //         this.$refs.name.focus();
-    //       });
-    //     }
-    //   } else if (item.saleInfo.saleability === 'NOT_FOR_SALE') {
-    //     this.notForSale = true;
-    //   }
-    // },
-    // addProduct() {
-    //   this.price = this.item.saleInfo.listPrice.amount;
-    //   // EventBus.$emit('priceproduct', this.price);
-    //   this.$store.commit('addProduct', this.item);
-    //   this.modal.showModal.popup_open = false;
-    // },
   },
-
-  // mounted() {
-  // EventBus.$on('closeModal', () => (this.showModal.popup_open = false));
-  // },
 };
 </script>
 
